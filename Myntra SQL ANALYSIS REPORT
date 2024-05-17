@@ -1,0 +1,626 @@
+Q1. What is the average price of products listed on Myntra?
+o	1538.2
+
+SQL CODE 
+o	select avg(price) from myntra_selected
+
+Q2. How many different sellers are there on Myntra?
+o	5482
+
+SQL CODE 
+o	select count (distinct 
+	seller )
+	from
+	myntra_selected 
+
+Q3. What are the top five sellers on Myntra based on the number of products they offer? Provide both the seller name and the number of products they sell.
+
+seller	no_of_products
+Roadster	10594
+H&M	6649
+Puma	6525
+max	6457
+Anouk	6078
+
+
+seller	no_of_products
+Wild & Free	1
+Reistor	1
+Silverholic	1
+Amefa	1
+TRU HAIR	1
+
+o	SQL CODE 
+
+select seller,
+count(*) as no_of_products
+ from myntra_selected
+group by seller
+order by count(*) desc 
+limit 5
+
+Q4. What is the average rating of products listed on Myntra?
+
+o	1.60
+o	SQL CODE 
+
+select avg(rating) from myntra_selected
+
+
+Q5. List the names of T-shirts priced higher than the average T-shirt price.
+
+
+
+
+Men Striped Polo Collar T-shirt
+Men Polo Collar Slim Fit T-shirt
+Men Printed Football T-shirt
+Men Solid Pure Cotton T-shirt
+Men Solid Pure Cotton T-shirt
+
+o	SQL CODE 
+
+with cte as (SELECT *,
+	case when name like '%Men%' then name 
+	end as men ,
+    CASE 
+        WHEN name LIKE '%T-shirt%' THEN name 
+    END AS "T-shirts"
+FROM myntra_selected
+WHERE CASE 
+        WHEN name LIKE '%T-shirt%' THEN name 
+    END  IS NOT NULL
+	and 
+	case when name like '%Men%' then name 
+	end is not null 
+	)
+
+
+select * from cte 
+where price > (select avg(price) from cte)
+	order by price desc 
+limit 5
+
+Q6. How many products are available for men, women, boys, and girls respectively?
+
+total_men_products	total_women_products	total_boys_products	total_girls_products
+200007	145146	41649	16096
+
+
+o	SQL CODE 
+with cte as (select *,
+	CASE 
+        WHEN name LIKE '%Men%' THEN name 
+    END AS men,
+	CASE 
+        WHEN name LIKE '%Women%' THEN name 
+    END AS Women,
+	CASE 
+        WHEN name LIKE '%Boys%' THEN name 
+    END AS Boys,
+    CASE 
+        WHEN name LIKE '%Girls%' THEN name 
+    END AS Girls
+	from myntra_selected)
+select count (*)as total_men_Products,
+(select count(*) from cte where Women is not null ) as Total_Women_Products,
+(select count(*) from cte where Boys is not null ) as Total_Boys_Products,
+(select count(*) from cte where Girls is not null ) as Total_Girls_Products
+	from cte where men is not null
+
+
+Q7. What are the average prices of products and discounts offered for men's and women's items?
+avg_price_men	avg_price_women
+1525.1	1644.76
+
+o	SQL CODE 
+
+with cte as (select *,
+	CASE 
+        WHEN name LIKE '%Men%' THEN name 
+    END AS men ,
+    CASE
+        WHEN name LIKE '%Women%' THEN name 
+    END AS Women from myntra_selected)
+
+select round (avg(price),2) as Avg_price_men,
+(select round (avg(price),2) as Avg_price_Women
+	from cte
+where Women is not null)
+	from cte
+where men is not null
+
+
+Q8. Compare the average discount percentage offered for men's, women's, and kids' items.
+
+avg_discount_men	avg_discount_women
+92.69	120.16
+
+
+
+o	SQL CODE 
+
+with cte as (select *,
+case
+	when discount >=100 then round (((mrp- price)/mrp)*100 ,2)
+	when discount <99 then discount 
+	end as discount_prct ,
+	CASE 
+        WHEN name LIKE '%Men%' THEN name 
+    END AS men ,
+    CASE
+        WHEN name LIKE '%Women%' THEN name end as Women
+	from myntra_selected)
+select round (avg(discount),2) as Avg_price_men,
+(select round (avg(discount),2) as Avg_price_Women
+	from cte
+where Women is not null)
+	from cte
+where men is not null
+
+avg_rating_mens_products	avg_rating_womens_products
+1.44	1.24
+
+
+
+Q9. What is the average rating for men's and women's products respectively?
+
+with cte as (select *,
+	CASE 
+        WHEN name LIKE '%Men%' THEN name 
+    END AS men ,
+    CASE
+        WHEN name LIKE '%Women%' THEN name end as Women
+	from myntra_selected)
+select avg(rating) as Avg_rating_mens_products,
+(select  avg(rating)as Avg_rating_Womens_products
+	from cte
+where Women is not null)
+	from cte
+where men is not null
+
+Q10. Who are the top five sellers on Myntra based on the average rating and the total number of ratings received?
+
+seller	avg_rating	no_of_reviews
+Biotique	4	13240.13
+Donald Duck	4	5600
+Neutrogena	4	5500.3
+Maybelline	4	5328.39
+indulekha	4	3955.18
+
+
+
+o	SQL CODE 
+
+Select seller,
+	round (avg(rating)::int,2) as avg_rating,
+	round (avg(ratingTotal),2) as No_of_reviews
+	from myntra_selected
+group by seller
+order by round (avg(ratingTotal),2) desc , round (avg(rating)::int,2) desc 
+limit 5
+
+
+
+Q11. Which brands offer the highest average discount? Provide separate values for men's and women's items.
+avg_discount_men	avg_discount_women
+39.12	42.52
+	
+
+o	SQL CODE 
+with cte as (select *,
+case
+	when discount >=100 then round (((mrp- price)/mrp)*100 ,2)
+	when discount <99 then discount 
+	end as discount_prct ,
+	CASE 
+        WHEN name LIKE '%Men%' THEN name 
+    END AS men ,
+    CASE
+        WHEN name LIKE '%Women%' THEN name end as Women
+	from myntra_selected)
+
+select round (avg(discount_prct),2) as Avg_price_men,
+(select round (avg(discount_prct),2) 
+	from cte
+where Women is not null) as Avg_price_Women
+	from cte
+where men is not null
+
+
+With cte as (with cte as (select *,
+case
+	when discount >=100 then round (((mrp- price)/mrp)*100 ,2)
+	when discount <99 then discount 
+	end as discount_prct ,
+	CASE 
+        WHEN name LIKE '%Men%' THEN name 
+    END AS men ,
+    CASE
+        WHEN name LIKE '%Women%' THEN name end as Women
+	from myntra_selected)
+
+select round (avg(discount_prct),2) as Avg_discount_men,
+(select round (avg(discount_prct),2) 
+	from cte
+where Women is not null) as Avg_discount_Women
+	from cte
+where men is not null ),
+
+
+men as (select * ,
+	(select avg_discount_men from cte) as avg_discount_men,
+	case
+	when discount >=100 then round (((mrp- price)/mrp)*100 ,2)
+	when discount <99 then discount 
+	end as discount_prct
+	from myntra_selected
+where 
+CASE 
+        WHEN name LIKE '%Men%' THEN name 
+    END  is not null ),
+
+	
+women as (select * ,
+	(select avg_discount_women from cte) as avg_discount_women,
+     case
+	when discount >=100 then round (((mrp- price)/mrp)*100 ,2)
+	when discount <99 then discount 
+	end as discount_prct
+	from myntra_selected
+where 
+CASE 
+        WHEN name LIKE '%Women%' THEN name 
+    END  is not null )
+
+select 
+	name,
+	avg_discount_men,
+	discount_prct,
+    (discount_prct- avg_discount_men) as discount_difference
+	from men
+	where discount_prct is not null
+order by  (discount_prct- avg_discount_men) desc 
+limit 5
+
+
+
+
+
+
+
+
+Q 10. Best sellers based on avg rating, no of ratings 
+
+
+
+Q10. Which brands offer most discount?
+
+
+
+
+name	avg_discount_men	discount_prct	discount_difference
+Men Penis Enlargement Oil	39.12	96	56.88
+Men Printed SPTCAS T-shirt	39.12	96	56.88
+Men Mid-Rise Joggers	39.12	96	56.88
+Speedy & Easy Men's Hair Color	39.12	96	56.88
+Men Printed Trunk	39.12	96	56.88
+
+
+With cte as (with cte as (select *,
+case
+	when discount >=100 then round (((mrp- price)/mrp)*100 ,2)
+	when discount <99 then discount 
+	end as discount_prct ,
+	CASE 
+        WHEN name LIKE '%Men%' THEN name 
+    END AS men ,
+    CASE
+        WHEN name LIKE '%Women%' THEN name end as Women
+	from myntra_selected)
+
+select round (avg(discount_prct),2) as Avg_discount_men,
+(select round (avg(discount_prct),2) 
+	from cte
+where Women is not null) as Avg_discount_Women
+	from cte
+where men is not null ),
+
+
+men as (select * ,
+	(select avg_discount_men from cte) as avg_discount_men,
+	case
+	when discount >=100 then round (((mrp- price)/mrp)*100 ,2)
+	when discount <99 then discount 
+	end as discount_prct
+	from myntra_selected
+where 
+CASE 
+        WHEN name LIKE '%Men%' THEN name 
+    END  is not null ),
+
+	
+women as (select * ,
+	(select avg_discount_women from cte) as avg_discount_women,
+     case
+	when discount >=100 then round (((mrp- price)/mrp)*100 ,2)
+	when discount <99 then discount 
+	end as discount_prct
+	from myntra_selected
+where 
+CASE 
+        WHEN name LIKE '%Women%' THEN name 
+    END  is not null )
+
+select 
+	name,
+	avg_discount_women,
+	discount_prct,
+    (discount_prct- avg_discount_women) as discount_difference
+	from women
+	where discount_prct is not null
+	group by name,avg_discount_women,discount_prct,(discount_prct- avg_discount_women) 
+order by  (discount_prct- avg_discount_women) desc 
+limit 5
+name	avg_discount_women	discount_prct	discount_difference
+Women Pack Of 3 Bikini Briefs	42.52	96	53.48
+Women Pack Of 3 Hipster Briefs	42.52	96	53.48
+Women Pack Of 3 Printed Bikini Briefs	42.52	96	53.48
+Women Pack Of 3 Printed Cotton Bikini Briefs	42.52	96	53.48
+Women Pack Of 3 Solid Bikini Briefs	42.52	96	53.48
+
+
+So we can conclude that in both men and women undergarments is higly discounted item. 
+
+Q12. Identify the products with the highest discount compared to the category average. Provide the product name, category, and the difference in discount percentage.
+category	total_rating	avg_rating	no_of_sellers
+Pure Cotton T-shirt	468688	2	217
+Slim Fit Jeans	412097	2	153
+Skinny Fit Jeans	325245	2	92
+Polo Collar T-shirt	248376	2	314
+Tapered Fit Jeans	232374	2	54
+
+category	total_rating	avg_rating	no_of_sellers
+Women Analogue Watch	268092	2	122
+NULL	81290	1	635
+Pure Cotton T-shirt	78242	3	49
+Women Walking Shoes	48555	2	51
+Women Running Shoes	48172	2	59
+
+
+with cte as (with cte as (select *,
+	CASE WHEN name LIKE '%Women%' THEN name END AS Women
+	from myntra_selected
+where 
+CASE WHEN name LIKE '%Women%' THEN name  END is not null )
+
+
+select *,
+	STRING_TO_ARRAY(name, ' ') AS name_array
+	from cte
+order by ratingtotal desc, rating desc )
+
+
+select 
+	name_array[array_length(name_array,1)-2]||' ' || name_array[array_length(name_array,1)-1] || ' '  || name_array[array_length(name_array,1)]  as category ,
+		sum(ratingtotal) as Total_rating,
+	avg(rating)::int as Avg_rating,
+	count(distinct seller) as No_of_Sellers
+
+	from cte
+group by  name_array[array_length(name_array,1)-2]||' ' || name_array[array_length(name_array,1)-1] || ' '  || name_array[array_length(name_array,1)] 
+order by sum(ratingtotal) desc , avg(rating)::int desc 
+limit 5 
+
+
+
+ 
+with cte as (with cte as (select *,
+	CASE WHEN name LIKE '%Men%' THEN name END AS Men
+	from myntra_selected
+where 
+CASE WHEN name LIKE '%Men%' THEN name  END is not null )
+
+
+select *,
+	STRING_TO_ARRAY(name, ' ') AS name_array
+	from cte
+order by ratingtotal desc, rating desc )
+
+
+select 
+	name_array[array_length(name_array,1)-2]||' ' || name_array[array_length(name_array,1)-1] || ' '  || name_array[array_length(name_array,1)]  as category ,
+		sum(ratingtotal) as Total_rating,
+	avg(rating)::int as Avg_rating,
+	count(distinct seller) as No_of_Sellers
+
+	from cte
+group by  name_array[array_length(name_array,1)-2]||' ' || name_array[array_length(name_array,1)-1] || ' '  || name_array[array_length(name_array,1)] 
+order by sum(ratingtotal) desc , avg(rating)::int desc 
+limit 5 
+
+Q13. Determine the categories and sellers with the most products rated below the category average. Provide the category name, total products, total low-rated products, and the seller name.
+
+
+category	total_products	total_low_rating_products
+Pure Cotton T-shirt	18210	7605
+Polo Collar T-shirt	17414	9013
+Slim Fit T-shirt	15146	9073
+2 Pillow Covers	10820	8615
+Printed Cotton T-shirt	7997	6912
+
+
+category	seller	total_products	total_low_rating_products
+2 Pillow Covers	JC Collection	747	741
+2 Pillow Covers	SWAYAM	566	436
+2 Lounge Pants	FashionRack	561	550
+Slim Fit T-shirt	U.S. Polo Assn.	537	83
+Gold-Plated Jewellery Set	ROFARWORD	474	472
+
+SQL CODE 
+
+
+with cte as (select *,
+	STRING_TO_ARRAY(name, ' ') AS name_array
+	from myntra_selected
+order by ratingtotal desc, rating desc)
+, cte2 as (
+select 
+	name_array[array_length(name_array,1)-2]||' ' || name_array[array_length(name_array,1)-1] || ' '  || name_array[array_length(name_array,1)]  as category ,
+		sum(ratingtotal) as Total_rating,
+	avg(rating)::int as Avg_rating,
+	count(distinct seller) as No_of_Sellers
+	from cte
+group by  name_array[array_length(name_array,1)-2]||' ' || name_array[array_length(name_array,1)-1] || ' '  || name_array[array_length(name_array,1)] 
+order by sum(ratingtotal) desc , avg(rating)::int desc ),
+cte3 as (select *,
+	name_array[array_length(name_array,1)-2]||' ' || name_array[array_length(name_array,1)-1] || ' '  || name_array[array_length(name_array,1)]  as category
+	from 
+	cte),
+	cte4 as (
+select cte3.category,
+	count(*) as no_of_products
+	from cte3
+	join cte2	
+on cte3.category= cte2.category
+	where 
+	rating <avg_rating
+	group by cte3.category
+    order by count(*) desc ),
+cte5 as (select cte3.category,
+	count(cte3.category) as Total_products
+	from cte3
+group by cte3.category 
+order by count(*) desc )
+select cte4.category,
+	cte5.total_products,
+	cte4.no_of_products as Total_low_rating_Products
+	from cte5 join cte4 on 
+cte4.category= cte5.category
+
+with cte as (select *,
+	STRING_TO_ARRAY(name, ' ') AS name_array
+	from myntra_selected
+order by ratingtotal desc, rating desc)
+, cte2 as (
+select 
+	name_array[array_length(name_array,1)-2]||' ' || name_array[array_length(name_array,1)-1] || ' '  || name_array[array_length(name_array,1)]  as category ,
+		sum(ratingtotal) as Total_rating,
+	avg(rating)::int as Avg_rating,
+	count(distinct seller) as No_of_Sellers
+	from cte
+group by  name_array[array_length(name_array,1)-2]||' ' || name_array[array_length(name_array,1)-1] || ' '  || name_array[array_length(name_array,1)] 
+order by sum(ratingtotal) desc , avg(rating)::int desc ),
+cte3 as (select *,
+	name_array[array_length(name_array,1)-2]||' ' || name_array[array_length(name_array,1)-1] || ' '  || name_array[array_length(name_array,1)]  as category
+	from 
+	cte),
+	cte4 as (
+select cte3.category,
+	seller,
+	count(*) as no_of_products
+	from cte3
+	join cte2	
+on cte3.category= cte2.category
+	where 
+	rating <avg_rating
+	group by cte3.category, seller
+    order by count(*) desc ),
+
+cte5 as (select cte3.category,
+	seller,
+	count(cte3.category) as Total_products
+	from cte3
+group by cte3.category , seller
+order by count(*) desc )
+
+select cte4.category,
+	cte5.seller,
+	cte5.total_products,
+	cte4.no_of_products as Total_low_rating_Products
+	from cte5 join cte4 on 
+cte4.category= cte5.category and cte5.seller=cte4.seller
+limit 5 
+
+
+ Q14. What is the average discount percentage for men's shoes on Myntra?
+36.88
+
+SQL CODE 
+
+select round (avg(discount_prct),2) as discount_prct
+	from 
+
+(select *,
+	case
+	when discount >=100 then round (((mrp- price)/mrp)*100 ,2)
+	when discount <99 then discount 
+	end as discount_prct,
+	STRING_TO_ARRAY(name, ' ') as name_array
+	from myntra_selected
+    where name like  '%Shoes%' 
+	or  name like '%shoes%') f
+where 
+      name_array[1]='Men'
+
+Q15. Compare the average discount percentages for men's, women's, and kids' shoes respectively.
+
+avg_discount_kids_shoes	avg_discount_men_shoes	avg_discount_women_shoes
+34.1	36.88	30.81
+
+
+o	SQL CODE 
+
+with men as (select round (avg(discount_prct),2) as discount_prct
+	from 
+
+(select *,
+	case
+	when discount >=100 then round (((mrp- price)/mrp)*100 ,2)
+	when discount <99 then discount 
+	end as discount_prct,
+	STRING_TO_ARRAY(name, ' ') as name_array
+	from myntra_selected
+    where name like  '%Shoes%' 
+	or  name like '%shoes%') f
+where 
+      name_array[1]='Men')
+
+, women as (select round (avg(discount_prct),2) as discount_prct
+	from 
+
+(select *,
+	case
+	when discount >=100 then round (((mrp- price)/mrp)*100 ,2)
+	when discount <99 then discount 
+	end as discount_prct,
+	STRING_TO_ARRAY(name, ' ') as name_array
+	from myntra_selected
+    where name like  '%Shoes%' 
+	or  name like '%shoes%') f
+where 
+      name_array[1]='Women'),
+
+
+
+kids as (select round (avg(discount_prct),2) as discount_prct
+	from 
+
+(select *,
+	case
+	when discount >=100 then round (((mrp- price)/mrp)*100 ,2)
+	when discount <99 then discount 
+	end as discount_prct,
+	STRING_TO_ARRAY(name, ' ') as name_array
+	from myntra_selected
+    where name like  '%Shoes%' 
+	or  name like '%shoes%') f
+where 
+      name_array[1]='Kids')
+
+select discount_prct as Avg_discount_kids_shoes ,
+	(select * from men) as Avg_discount_Men_shoes,
+	(select * from women) as Avg_discount_Women_shoes
+	from kids
+
+
