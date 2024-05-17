@@ -1,0 +1,477 @@
+1.	What is the overall trend of house prices in Canada over the period 2000-2010?
+
+CODE
+with average_index_2010 as (select year,
+round(avg(composite_hpi_sa),2) as average_index_value from 
+(SELECT EXTRACT (YEAR FROM date) AS year, composite_hpi_sa 
+FROM aggregate
+WHERE date > DATE ('2000-01-01') AND date < DATE ('2010-01-01'))n
+group by year
+order by year),
+
+average_price_2010 as (select EXTRACT (YEAR FROM date) AS year,
+round(avg(composite_benchmark_sa),2) as average_price from aggregate
+WHERE date > DATE ('2000-01-01') AND date < DATE('2010-01-01')
+group by EXTRACT (YEAR FROM date)
+order by EXTRACT (YEAR FROM date))
+
+select average_index_2010.year as year,
+average_index_value,
+average_price
+from average_index_2010
+join 
+average_price_2010 
+on average_price_2010.year=average_index_2010.year
+
+RESULT 
+
+year	average_index_value	average_price
+2005	103.08	248383.33
+2006	115.93	279416.67
+2007	128.93	310733.33
+2008	131.82	317683.33
+2009	128.01	308516.67
+
+
+
+
+2.	What is the overall trend of house prices in Canada over the period 2010-2020?
+
+CODE 
+
+with average_index_2020 as (select year,
+round(avg(composite_hpi_sa),2)as average_index_value from 
+(SELECT EXTRACT(YEAR FROM date) AS year, composite_hpi_sa 
+FROM aggregate
+WHERE date > DATE('2010-01-01') AND date < DATE('2020-01-01'))n
+group by year
+order by year ),
+
+average_price_2020 as (select EXTRACT(YEAR FROM date) AS year,
+round(avg(composite_benchmark_sa),2) as average_price from aggregate
+WHERE date > DATE('2010-01-01') AND date < DATE('2020-01-01')
+group by EXTRACT(YEAR FROM date)
+order by EXTRACT(YEAR FROM date))
+
+select average_index_2020.year as year,
+average_index_value,
+average_price
+from average_index_2020
+join 
+average_price_2020 
+on average_price_2020.year=average_index_2020.year
+
+RESULT 
+year	average_index_value	average_price
+2010	138.84	334590.91
+2011	146.71	353541.67
+2012	153.38	369608.33
+2013	156.37	376850
+2014	164.73	396991.67
+2015	177.96	428900
+2016	205.61	495550
+2017	228.82	551466.67
+2018	225.58	543641.67
+2019	218.66	526991.67
+
+3.	Which province experienced the highest increase in Composite House Price Index (HPI) during the given timeframe?
+Code 
+with alberta_percent_increase_since_2005 as (with cte as (select extract (year from date) as year,
+round (avg (composite_hpi_sa ),2) as avg_composite_index
+from alberta
+group by extract (year from date)
+order by extract (year from date)),
+
+cte2 as (select year,
+round((avg_composite_index-100.83)*100/avg_composite_index,2) as percent_increase_from_2005
+from cte
+where year is not null
+order by year desc )
+select * from cte2 
+limit 1)
+select * from alberta_percent_increase_since_2005
+
+year	percent_increase_from_2005
+2023	55.5
+
+
+
+Ontario 
+Code 
+with ontario_percent_increase_since_2005 as (with cte as (select extract (year from date) as year,
+round (avg (composite_hpi_sa ),2) as avg_composite_index
+from ontario
+group by extract (year from date)
+order by extract (year from date)),
+
+cte2 as (select year,
+round((avg_composite_index-100.83)*100/avg_composite_index,2) as percent_increase_from_2005
+from cte
+where year is not null
+order by year desc )
+select * from cte2 
+limit 1)
+select year, percent_increase_from_2005 from ontario_percent_increase_since_2005
+year	percent_increase_from_2005
+2023	69.42
+
+
+Overall 
+year	alberta_percent_increase_from_2005	ontario_percent_increase_from_2005
+2023	55.5	69.42
+
+Hence, we can conclude that Ontario has on an average 14 % more increase in house prices. 
+
+
+
+
+
+
+
+To put things into perspective,
+Consider a house priced at 400k in 2005.
+, today that same house will be worth 620k in Alberta and 676k in Ontario.
+
+
+Price in 2005	                            Current Price in Ontario        	              Current price in Alberta
+400k	                                                  676k	                                                            620k
+
+ 
+
+4.	What were the average Single-Family House Price Index values across all provinces in year 2020?
+Code 
+select extract (year from date) as year,
+(Select 
+round (avg (single_family_hpi_sa),2) 
+as average_single_family_house_index_2020_ontario from ontario
+where extract (year from date) =2020
+group by extract (year from date)),
+(
+select round (avg (single_family_hpi_sa),2) 
+as average_single_family_house_index_2020_toronto from toronto
+where extract (year from date) =2020
+group by extract (year from date)),
+(Select round (avg (single_family_hpi_sa),2) 
+as average_single_family_house_index_2020_KW_region from kitchener_waterloo
+where extract (year from date) =2020
+group by extract (year from date)
+),
+(Select round (avg (single_family_hpi_sa),2) 
+as average_single_family_house_index_2020_calgary from calgary
+where extract (year from date) =2020
+group by extract (year from date)
+),
+(Select round (avg (single_family_hpi_sa),2) 
+as average_single_family_house_index_2020_edmonton from edmonton
+where extract (year from date) =2020
+group by extract (year from date)
+),
+
+(select round (avg (single_family_hpi_sa),2) 
+as average_single_family_house_index_2020_mississauga from mississauga
+where extract (year from date)=2020
+group by extract (year from date)
+),
+round (avg (single_family_hpi_sa),2) 
+as average_single_family_house_index_2020_alberta from alberta
+where extract (year from date) =2020
+group by extract (year from date)
+
+for single family house index in 2020
+Alberta	Calgary	Edmonton
+188.37	193.03	193.89
+
+Ontario	Toronto	KW_region	Mississauga
+251.34	272.28	294.7	295.15
+
+
+4. Is there any correlation between the One-Storey and Two-Storey House Price Indices in different provinces?
+Code 
+
+ALBERTA 
+select round (avg (one_storey_hpi_sa),2) as one_storey_hpi_sa,
+round(avg(two_storey_hpi_sa),2) as two_storey_hpi_sa
+from alberta
+where extract (year from date) =2020
+group by extract (year from date)
+one_storey_hpi_sa	two_storey_hpi_sa
+185.82	180.13
+
+
+ONTARIO
+select round (avg (one_storey_hpi_sa),2) as one_storey_hpi_sa,
+round(avg(two_storey_hpi_sa),2) as two_storey_hpi_sa
+from ontario
+where extract (year from date ) =2020
+group by extract (year from date )
+
+one_storey_hpi_sa	two_storey_hpi_sa
+246.07	254.22
+
+
+5.	Which province had the lowest increase in house prices based on the Composite Benchmark?
+
+
+
+
+
+
+6. How did the Single-Family House Price Benchmark in Canada compare to the Composite Benchmark?
+Code 
+select extract (year from date )as year ,
+round(avg (single_family_benchmark_sa),2) as single_family_benchmark_sa,
+round(avg(composite_benchmark_sa),2) as composite_benchmark_sa
+from aggregate
+group by year 
+order by extract (year from date )
+result 
+
+year	single_family_benchmark_sa	composite_benchmark_sa
+2005	268983.33	248383.33
+2006	301566.67	279416.67
+2007	334500	310733.33
+2008	341433.33	317683.33
+2009	331858.33	308516.67
+2010	360191.67	334325
+2011	383533.33	353541.67
+2012	403991.67	369608.33
+2013	412425	376850
+2014	435900	396991.67
+2015	474083.33	428900
+2016	552933.33	495550
+2017	608566.67	551466.67
+2018	587441.67	543641.67
+2019	567150	526991.67
+2020	609191.67	563566.67
+2021	769441.67	695616.67
+2022	858858.33	779858.33
+2023	791633.33	721850
+		
+
+7. What was the average price difference between One-Storey and Two-Storey Benchmark House prices in each province?
+Code 
+Ontario 
+select extract (year from date )as year ,
+round(avg (One_Storey_benchmark_sa),2) as One_Storey_benchmark_sa,
+round(avg(two_Storey_benchmark_sa),2) as two_Storey_benchmark_sa
+from ontario
+group by year 
+order by extract (year from date)
+year	one_storey_benchmark_sa	two_storey_benchmark_sa
+2005	240775	320366.67
+2006	254766.67	338775
+2007	269441.67	359050
+2008	277075	368166.67
+2009	274758.33	367033.33
+2010	294858.33	401708.33
+2011	310116.67	427858.33
+2012	330766.67	458158.33
+2013	342250	475600
+2014	362141.67	508875
+2015	390408.33	555675
+2016	452766.67	649683.33
+2017	522283.33	746816.67
+2018	509683.33	716666.67
+2019	519891.67	721975
+2020	581175	794916.67
+2021	763825	1017900
+2022	845825	1144875
+2023	765666.67	1054716.67
+NULL	NULL	NULL
+
+
+Alberta 
+select extract (year from date )as year ,
+round(avg (One_Storey_benchmark_sa),2) as One_Storey_benchmark_sa,
+round(avg(two_Storey_benchmark_sa),2) as two_Storey_benchmark_sa
+from alberta
+group by year 
+order by extract (year from date )
+
+year	one_storey_benchmark_sa	two_storey_benchmark_sa
+2005	200400	263658.33
+2006	279775	375591.67
+2007	356350	458050
+2008	334208.33	432925
+2009	311458.33	405216.67
+2010	324466.67	425525
+2011	322291.67	424400
+2012	334683.33	436366.67
+2013	356350	460825
+2014	386816.67	495716.67
+2015	386883.33	494658.33
+2016	375966.67	480350
+2017	380383.33	485700
+2018	378750	482800
+2019	367400	470733.33
+2020	368116.67	469775
+2021	397983.33	509050
+2022	431800	574558.33
+2023	434100	577783.33
+NULL	NULL	NULL
+
+
+8. Were there any significant fluctuations in the Composite HPI for Canada, and if so, what might have caused them?
+
+During covid 
+
+with cte as (select extract (year from date) as year,
+round (avg (composite_benchmark_sa),2) as composite_benchmark_sa_during_covid
+from aggregate
+where extract (year from date) in (2016, 2017,2018,2020,2019,2021)
+group by year 
+order by extract (year from date))
+select *,
+round ((composite_benchmark_sa_during_covid- 
+ lag(composite_benchmark_sa_during_covid) over ())
+ *100/ composite_benchmark_sa_during_covid, 2) as percent_difference
+from cte
+
+year	composite_benchmark_sa_during_covid	percent_difference
+2016	495550	                             NULL
+2017	551466.67	10.14
+2018	543641.67	-1.44
+2019	526991.67	-3.16
+2020	563566.67	6.49
+2021	695616.67	18.98
+
+During 2008 financial crash 
+with cte as (select extract (year from date) as year,
+round (avg (composite_benchmark_sa),2) as composite_benchmark_sa_during_financial_crash
+from aggregate
+where extract (year from date) in (2009, 2010,2008,2007,2011,2012)
+group by year 
+order by extract (year from date))
+select *,
+round ((composite_benchmark_sa_during_financial_crash- 
+ lag(composite_benchmark_sa_during_financial_crash) over ())
+ *100/ composite_benchmark_sa_during_financial_crash, 2) as percent_difference
+from cte
+year	composite_benchmark_sa_during_financial_crash	percent_difference
+2007	310733.33	NULL
+2008	317683.33	2.19
+2009	308516.67	-2.97
+2010	334325	7.72
+2011	353541.67	5.44
+2012	369608.33	4.35
+
+
+9. Compare the percentage change in house prices between different provinces. Which provinces performed better or worse than the national average?
+
+Code 
+with canada_index as (with cte as (select extract (year from date )as year ,
+round(avg (composite_benchmark_sa),2) as composite_benchmark_sa
+from aggregate
+group by year 
+order by extract (year from date ))
+select *,
+round((composite_benchmark_sa- 
+ lag(composite_benchmark_sa) over())
+ *100/ composite_benchmark_sa, 2) as percent_difference
+from cte )
+
+
+,alberta_index as (with cte as (select extract (year from date )as year ,
+round(avg (composite_benchmark_sa),2) as composite_benchmark_sa
+from alberta
+
+group by year 
+order by extract (year from date ))
+select *,
+round((composite_benchmark_sa- 
+ lag(composite_benchmark_sa) over())
+ *100/ composite_benchmark_sa, 2) as percent_difference
+from cte )
+
+,ontario_index as (with cte as (select extract (year from date )as year ,
+round(avg (composite_benchmark_sa),2) as composite_benchmark_sa
+from aggregate
+
+group by year 
+order by extract (year from date ))
+select *,
+round((composite_benchmark_sa- 
+ lag(composite_benchmark_sa) over())
+ *100/ composite_benchmark_sa, 2) as percent_difference
+from cte )
+select alberta_index.year,
+alberta_index.percent_difference,
+ontario_index.percent_difference,
+canada_index.percent_difference
+from alberta_index 
+join canada_index
+on canada_index.year=alberta_index.year
+join ontario_index on 
+alberta_index.year=ontario_index.year
+
+Result 
+
+year	alberta_perct_diff	ontario__perct_diff	canada_perct_diff
+2005	NULL	NULL	NULL
+2006	29.48	11.11	11.11
+2007	20.75	10.08	10.08
+2008	-6.12	2.19	2.19
+2009	-7.34	-2.97	-2.97
+2010	5.08	7.72	7.72
+2011	-0.36	5.44	5.44
+2012	3.14	4.35	4.35
+2013	6.07	1.92	1.92
+2014	7.49	5.07	5.07
+2015	-0.2	7.44	7.44
+2016	-2.96	13.45	13.45
+2017	1.24	10.14	10.14
+2018	-0.15	-1.44	-1.44
+2019	-2.6	-3.16	-3.16
+2020	-0.29	6.49	6.49
+2021	7.8	18.98	18.98
+2022	9.68	10.8	10.8
+2023	0.29	-8.04	-8.04
+
+
+
+
+10. Analyze the seasonal patterns in house price movements for Canada and individual provinces. Are there specific months when prices tend to rise or fall?
+Code 
+with cte as (SELECT 
+  CASE EXTRACT (MONTH FROM date)
+    WHEN 1 THEN 'January'
+    WHEN 2 THEN 'February'
+    WHEN 3 THEN 'March'
+    WHEN 4 THEN 'April'
+    WHEN 5 THEN 'May'
+    WHEN 6 THEN 'June'
+    WHEN 7 THEN 'July'
+    WHEN 8 THEN 'August'
+    WHEN 9 THEN 'September'
+    WHEN 10 THEN 'October'
+    WHEN 11 THEN 'November'
+    WHEN 12 THEN 'December'
+  END AS month,
+		extract (month from date) as month_id,	 
+round (avg (composite_hpi_sa),2) as avg_composite_hpi_sa
+from aggregate 
+group by extract (month from date) )
+select month,
+avg_composite_hpi_sa
+from cte
+order by month_id
+
+month	avg_composite_hpi_sa
+January	183.27
+February	184.53
+March	185.37
+April	186.06
+May	186.89
+June	187.81
+July	181.68
+August	182.47
+September	183.48
+October	184.51
+November	185.57
+December	186.54
+	
+
+
+
+
+
