@@ -1,0 +1,468 @@
+1.	What are the top 5 industries with the highest total funds raised?
+
+SQL CODE 
+select 
+company,
+max(industry) as industry,
+sum(funds_raised) as total_funds_raised
+
+from 
+(select industry,
+funds_raised,
+company ,
+row_number() over(partition by industry order by funds_raised desc ) as ranking 
+
+from layoffs )k
+where ranking <=5
+group by company
+order by industry
+
+company	industry	total_funds_raised
+OneWeb	Aerospace	3000
+Ursa Major	Aerospace	233
+Astra	Aerospace	400
+AirMap	Aerospace	75
+Icon	Construction	451
+Katerra	Construction	4100
+Procore	Construction	649
+Meta	Consumer	52000
+Twitter	Consumer	38700
+Bakkt	Crypto	932
+Fireblocks	Crypto	1000
+BlockFi	Crypto	2000
+NYDIG	Crypto	1400
+OpenText	Data	1100
+UiPath	Data	4000
+Splunk	Data	2400
+Palantir	Data	3000
+Articulate	Education	1500
+Eruditus	Education	1200
+Byju's	Education	16500
+RigUp	Energy	423
+Workrise	Energy	752
+Wallbox	Energy	167
+Turntide	Energy	491
+Nubank	Finance	12300
+Robinhood	Finance	11200
+Zwift	Fitness	619
+Noom	Fitness	657
+Peloton	Fitness	5700
+Delivery Hero	Food	26500
+Swiggy	Food	7200
+Carta	HR	1100
+Zenefits	HR	583
+Remote	HR	496
+PayFit	HR	495
+Gusto	HR	746
+Western Digital	Hardware	1800
+HP	Hardware	4200
+Lenovo	Hardware	1700
+Invitae	Healthcare	2000
+Medtronic	Healthcare	5900
+EQRx	Healthcare	1900
+Verily	Healthcare	3500
+PharmEasy	Healthcare	1600
+Nutanix	Infrastructure	1100
+Rubrik	Infrastructure	553
+Cloudera	Infrastructure	1000
+DigitalOcean	Infrastructure	491
+Mavenir	Infrastructure	854
+Icertis	Legal	521
+Everlaw	Legal	298
+CS Disco	Legal	466
+Flexport	Logistics	2400
+Convoy	Logistics	3300
+Uber Freight	Logistics	2700
+Paperless Parts	Manufacturing	30
+Augury	Manufacturing	274
+CreateMe	Manufacturing	0
+Syft Technologies	Manufacturing	0
+Coherent	Manufacturing	0
+AppLovin	Marketing	1600
+Wayflyer	Marketing	889
+Attentive	Marketing	863
+Momentive	Marketing	2200
+Bilibili	Media	3700
+Netflix	Media	487600
+View	Other	4100
+Dropbox	Other	3400
+Unity	Other	1300
+Sinch	Other	1500
+InVision	Product	356
+Airtable	Product	1400
+GitLab	Product	413
+Pendo	Product	938
+WeWork 	Real Estate	41700
+WeWork	Real Estate	41250
+ZipRecruiter	Recruiting	988
+LinkedIn	Recruiting	154
+Andela	Recruiting	181
+Glassdoor	Recruiting	204
+JD.ID	Retail	5100
+Sea	Retail	8600
+Flipkart	Retail	12900
+Apple	Retail	6200
+Thrasio	Retail	3400
+ServiceTitan	Sales	1100
+DocuSign	Sales	536
+Gong	Sales	583
+Highspot	Sales	1288
+Okta	Security	2400
+Tanium	Security	1000
+OneTrust	Security	1336
+Lacework	Security	1900
+Uniphore	Support	620
+Freshworks	Support	968
+Talkdesk	Support	994
+Uber	Transportation	124000
+Airbnb	Travel	11800
+Expedia	Travel	3300
+OYO	Travel	7200
+
+
+
+
+
+
+
+
+
+2.	Generate a table with columns : country, total employees laid off, percentage change from previous row. 
+SELECT *,
+  CASE 
+    WHEN total_employees_laid_off = 0 OR lag(total_employees_laid_off) OVER (ORDER BY total_employees_laid_off) = 0 THEN '1'
+    WHEN total_employees_laid_off > lag(total_employees_laid_off) OVER (ORDER BY country) THEN 
+      CONCAT('+', ((total_employees_laid_off - lag(total_employees_laid_off) OVER (ORDER BY total_employees_laid_off)) * 100.0 / lag(total_employees_laid_off) OVER (ORDER BY total_employees_laid_off))::text)
+    WHEN total_employees_laid_off < lag(total_employees_laid_off) OVER (ORDER BY country) THEN 
+      CONCAT('-', ((lag(total_employees_laid_off) OVER (ORDER BY total_employees_laid_off) - total_employees_laid_off) * 100.0 / lag(total_employees_laid_off) OVER (ORDER BY total_employees_laid_off))::text)
+  END AS Percentage_change
+FROM (
+  SELECT country,
+         SUM(laid_off_count) AS total_employees_laid_off
+  FROM layoffs
+  GROUP BY country
+) l
+order by percentage_change
+country	total_employees_laid_off	percentage_change
+Romania	252	0.80
+Russia	400	1.27
+United Arab Emirates	995	10.56
+Ukraine	50	11.11
+Poland	158	12.86
+India	41980	132.96
+Hong Kong	730	14.06
+Singapore	6995	14.58
+Brazil	11003	15.00
+South Korea	395	2.07
+Estonia	333	2.46
+Denmark	240	20.00
+Israel	3928	22.33
+Canada	9098	30.06
+Nigeria	1882	30.51
+Malaysia	100	33.33
+China	6105	38.09
+Netherlands	18020	4.28
+Sweden	11479	4.33
+Kenya	355	4.41
+Japan	165	4.43
+France	1442	44.92
+United Kingdom	9568	5.17
+Germany	17280	50.54
+United States	316290	653.43
+Mexico	270	7.14
+Australia	3211	70.62
+Saudi Arabia	340	0.29
+Chile	325	0.62
+Spain	339	1.80
+Switzerland	362	1.97
+Thailand	55	10.00
+Senegal	300	11.11
+Indonesia	4421	12.55
+Portugal	115	15.00
+Myanmar	200	21.21
+New Zealand	900	23.29
+Seychelles	75	25.00
+Finland	250	4.17
+Bulgaria	120	4.35
+Ireland	387	6.91
+Austria	640	60.00
+Norway	140	7.69
+Colombia	130	8.33
+Lithuania	60	9.09
+Vietnam	0	1.00
+Greece	0	1.00
+Luxembourg	45	1.00
+Peru	0	1.00
+Czech Republic	0	1.00
+Philippines	0	1.00
+South Africa	0	1.00
+Turkey	0	1.00
+Hungary	0	1.00
+Ghana	0	1.00
+Italy	0	1.00
+Pakistan	0	1.00
+Egypt	0	1.00
+Belgium	0	1.00
+Bahrain	0	1.00
+Uruguay	0	1.00
+Argentina	323	NULL
+
+
+3.	How many companies have a "Series C" stage in each country?
+select country,
+count(*)
+from layoffs
+where stage = 'Series C'
+group by country
+country	count
+Indonesia	3
+United Kingdom	10
+Ireland	1
+Germany	8
+Singapore	3
+Canada	18
+Portugal	1
+Finland	1
+South Korea	1
+Colombia	2
+India	16
+Chile	2
+France	3
+Estonia	2
+Israel	7
+Kenya	1
+Philippines	1
+United States	230
+New Zealand	1
+Hungary	1
+China	1
+Netherlands	2
+Brazil	9
+Austria	1
+Australia	10
+Spain	1
+Mexico	3
+Poland	1
+
+4.	Which location (HQ) has the highest number of companies in the "Consumer" industry?
+select country,
+count(*)
+from layoffs
+where industry = 'Consumer'
+group by country 
+order by count(*) desc 
+limit 3
+country	count
+United States	92
+India	9
+China	8
+
+5.	What is the total number of employees laid off for companies in each stage? For usa and india . Also include percentage change for each stage . 
+select *,
+(round ((total_laid_off- lag(total_laid_off) over (order by stage))*100/total_laid_off,2))::text || '%' as percentage_difference
+from (select 
+country ,
+stage,
+sum (laid_off_count) as total_laid_off
+from layoffs
+where country in ('United States', 'India')
+group by country, 
+stage 
+order by stage)l
+country	stage	total_laid_off	percentage_difference
+United States	Acquired	24464	NULL
+India	Acquired	3260	-650.43%
+United States	Post-IPO	208443	98.44%
+India	Post-IPO	1650	-12532.91%
+United States	Private Equity	3547	53.48%
+India	Private Equity	5040	29.62%
+United States	Seed	424	-1088.68%
+India	Seed	439	3.42%
+United States	Series A	2634	83.33%
+India	Series A	1750	-50.51%
+India	Series B	2393	26.87%
+United States	Series B	9548	74.94%
+India	Series C	1851	-415.83%
+United States	Series C	11764	84.27%
+India	Series D	3301	-256.38%
+United States	Series D	11649	71.66%
+United States	Series E	9985	-16.66%
+India	Series E	2159	-362.48%
+United States	Series F	6429	66.42%
+India	Series F	2001	-221.29%
+United States	Series G	1230	-62.68%
+India	Series G	2100	41.43%
+India	Series H	2100	0.00%
+United States	Series H	5044	58.37%
+India	Series I	2250	-124.18%
+United States	Series I	195	-1053.85%
+India	Series J	3570	94.54%
+United States	Subsidiary	719	-396.52%
+India	Subsidiary	1300	44.69%
+United States	Unknown	20215	93.57%
+India	Unknown	6816	-196.58%
+
+6.	What is the average laid off for every month ? 
+select 
+extract (month from date) as month,
+round (avg(laid_off_count),2) as average_laid_off_count
+from layoffs
+group by extract (month from date)
+order by month
+month	average_laid_off_count
+1	337.55
+2	222.82
+3	199.3
+4	129.02
+5	189.35
+6	115.11
+7	123.97
+8	93.84
+9	58.34
+10	175.99
+11	231.85
+12	87.19
+
+
+ 
+
+
+7.	Which companies in CANADA had the most layoffs? Where are these companies located in canada ? 
+
+select * from layoffs
+where country in ('Canada')
+order by laid_off_count desc 
+limit 3
+company	location_hq	industry	percentage	date	source	funds_raised	stage	date_added	country	laid_off_count	list_of_employees_laid_off
+Shopify	Ottawa	Retail	0.2	2023-05-04	https://www.cbc.ca/news/business/shopify-layoffs-1.6831842	122	Post-IPO	2023-05-04 15:05	Canada	2300	https://weworkedatshop.com/
+Shopify	Ottawa	Retail	0.1	2022-07-26	https://www.wsj.com/articles/shopify-to-lay-off-10-of-workers-in-broad-shake-up-11658839047	122	Post-IPO	2022-07-26 15:20	Canada	1000	Unknown
+Hootsuite	Vancouver	Marketing	0.3	2022-08-09	https://betakit.com/hootsuite-restructuring-laying-off-30-percent-of-employees/	300	Series C	2022-08-09 17:35	Canada	400	Unknown
+
+8.	Which companies had less then average layoffs in complete year as compared to average layoffs in respective industries? What is the percentage difference between these values? 
+select *,
+round (((avg_laid_off_count_industry- laid_off_count)*100)/avg_laid_off_count_industry,2) as percent_difference 
+from (select company,
+location_hq ,
+industry ,
+laid_off_count,
+round ((select avg(laid_off_count) 
+                 from layoffs l3 where l3.industry=l1.industry ),2) 
+				 as avg_laid_off_count_industry
+from layoffs l1 where
+laid_off_count < 
+                (select avg(laid_off_count) 
+                 from layoffs l2 where l1.industry=l2.industry )
+				 and  laid_off_count >0)k
+				 limit 10
+company	location_hq	industry	laid_off_count	avg_laid_off_count_industry	percent_difference
+Uber	SF Bay Area	Transportation	200	236.76	15.53
+Tackle.io	Boise	Infrastructure	75	120.08	37.54
+Ritual	Toronto	Food	38	216.06	82.41
+Chigari	Bengaluru	Media	48	56.71	15.36
+CareRev	Los Angeles	Healthcare	100	146.95	31.95
+TADA	Seoul	Transportation	45	236.76	80.99
+Sonos	New York City	Consumer	130	413.28	68.54
+TrueCar	Los Angeles	Transportation	102	236.76	56.92
+Olo	New York City	Food	81	216.06	62.51
+Mamaearth	Gurugram	Retail	80	259.71	69.2
+
+
+9.	Perform descriptive statistics for the dataset for every country. 
+select country,
+count (distinct industry) as no_of_industries, 
+count(distinct location_hq) as locations_within_country,
+count(distinct company) as no_of_companies,
+round(avg(laid_off_count),2) as average_employees_laid_off,
+round(max(laid_off_count),2) as maximum_employees_laid_off,
+round(min(laid_off_count),2) as minimum_employees_laid_off
+from layoffs
+group by country
+order by no_of_companies desc
+country	no_of_industries	locations_within_country	no_of_companies	average_employees_laid_off	maximum_employees_laid_off	minimum_employees_laid_off
+United States	29	100	1376	178.49	12000	0
+India	20	11	143	226.92	2500	0
+Canada	23	11	92	81.23	2300	0
+United Kingdom	19	5	75	109.98	1700	0
+Germany	18	10	65	213.33	8000	0
+Brazil	18	8	62	134.18	1300	0
+Israel	17	5	56	62.35	600	0
+Australia	16	3	53	47.93	500	0
+Singapore	10	1	30	179.36	2000	0
+Indonesia	8	1	22	157.89	1300	0
+China	9	5	17	305.25	1800	0
+Sweden	8	5	16	521.77	8500	0
+Nigeria	5	2	14	110.71	900	0
+France	8	2	12	120.17	500	0
+Netherlands	7	2	12	1287.14	6000	0
+New Zealand	3	2	7	112.5	800	0
+Argentina	5	1	6	53.83	100	0
+United Arab Emirates	4	1	6	165.83	536	0
+Kenya	5	1	6	44.38	211	0
+Ireland	5	2	6	64.5	200	0
+Colombia	5	1	5	26	100	0
+Hong Kong	3	1	5	146	400	0
+Finland	4	1	4	62.5	250	0
+Mexico	3	3	4	54	100	0
+Chile	3	1	4	65	250	0
+Switzerland	3	3	4	90.5	300	0
+Denmark	4	1	4	60	150	15
+Austria	4	2	4	128	270	0
+Spain	4	2	4	84.75	250	0
+Poland	3	4	4	31.6	120	0
+Malaysia	3	1	3	33.33	50	0
+Estonia	3	1	3	66.6	143	30
+Luxembourg	3	1	3	15	45	0
+Norway	3	2	3	35	70	0
+Portugal	2	2	3	38.33	80	0
+Seychelles	1	3	3	18.75	75	0
+South Korea	3	1	3	131.67	350	0
+Romania	2	2	2	126	172	80
+Vietnam	2	2	2	0	0	0
+Pakistan	1	2	2	0	0	0
+Japan	2	1	2	82.5	85	80
+Egypt	2	1	2	0	0	0
+Russia	1	1	1	400	400	400
+Saudi Arabia	1	1	1	340	340	340
+Senegal	1	1	1	300	300	300
+Uruguay	1	1	1	0	0	0
+Greece	1	1	1	0	0	0
+South Africa	1	1	1	0	0	0
+Ghana	1	1	1	0	0	0
+Czech Republic	1	1	1	0	0	0
+Thailand	1	1	1	55	55	55
+Turkey	1	1	1	0	0	0
+Ukraine	1	1	1	50	50	50
+Bulgaria	1	1	1	120	120	120
+Myanmar	1	1	1	200	200	200
+Lithuania	1	1	1	60	60	60
+Belgium	1	1	1	0	0	0
+Italy	1	1	1	0	0	0
+Peru	1	1	1	0	0	0
+Philippines	1	1	1	0	0	0
+Hungary	1	1	1	0	0	0
+Bahrain	1	1	1	0	0	0
+
+10.	Finally do analysis on news sources:
+How many times does a particular domain name repeats? 
+How many  times does does this data comes from internal memo and and not news ? 
+SELECT 
+    SUBSTRING(source FROM 1 FOR POSITION('.com' IN source) + 3) AS domain_name,
+	count(*) as no_of_times_appeared
+FROM
+    layoffs
+	group by SUBSTRING(source FROM 1 FOR POSITION('.com' IN source) + 3) 
+	order by count(*) desc 
+limit 10
+domain_name	no_of_times_appeared
+htt	363
+https://techcrunch.com	164
+https://www.bizjournals.com	128
+https://www.linkedin.com	116
+https://www.businessinsider.com	96
+https://www.calcalistech.com	95
+Int	84
+https://inc42.com	83
+Lin	62
+https://www.geekwire.com	60
+
+
