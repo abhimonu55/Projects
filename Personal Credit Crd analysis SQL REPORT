@@ -1,0 +1,483 @@
+1. Retrieve all transactions posted on a New year’s day in 20222 and 2023
+
+select amount as Amount_Spent_2024,
+coalesce ((select  amount 
+ from Transactions
+where 
+posted_date= '2023-01-01'
+),
+'0.00') As Amount_Spent_2023,
+coalesce ((select  amount 
+ from Transactions
+where 
+posted_date = '2022-02-01'
+),
+'0.00') As Amount_Spent_2022
+
+ from Transactions
+where 
+posted_date in ('2023-01-01' , '2022-02-01', '2024-01-01')
+
+amount_spent_2024	amount_spent_2023	amount_spent_2022
+129.37	0	0
+
+
+
+
+
+
+2. Find the top 5 categories with the highest total spending.
+select  
+category,
+sum(amount) as total_amount 
+from Transactions
+Group by category
+order by sum(amount) desc 
+limit 5
+
+
+category	total_amount
+Education 	21453.3
+Personal and Household Expenses (Utilities)	13590.46
+Retail and grocery	4637.13
+Hotel, Entertainment and Recreation	3124.1
+Transportation 	3093.9
+
+
+
+3. Identify no of  transactions exceeding 20 $, 50 $ , 100 $ and 1000 $
+
+select count (*) as transactions_20$ ,
+(
+select count (*)  
+transactions_20$
+from
+transactions
+where 
+amount >50
+) as transactions_50$ 
+,
+(
+select count (*)  
+transactions_100$
+from
+transactions
+where 
+amount >100
+),
+(
+select count (*)  
+transactions_20$
+from
+transactions
+where 
+amount > 500
+) as transactions_500$
+,
+(
+select count (*)  
+transactions_20$
+from
+transactions
+where 
+amount > 1000
+) as transactions_1000$,
+(
+select count (*)  
+transactions_20$
+from
+transactions
+where 
+amount > 5000
+) as transactions_5000$
+from
+transactions
+where 
+amount >20
+
+
+
+transactions_20$	transactions_50$	transactions_100$	transactions_500$	transactions_1000$	transactions_5000$
+457	172	79	13	5	1
+
+
+5. Find Categories with majority spending more than average amount in that category 
+
+with cte as 
+(select *,
+avg(amount) over (partition by category ) as avg_amount 
+from transactions)
+select 
+category,
+count(*) as no_of_transactions
+ from cte 
+where 
+amount > avg_amount
+group by category
+order by count(*) desc
+limit 5 
+
+
+category	no_of_transactions
+Dine In	65
+Personal and Household Expenses( Utilities)	63
+UBER TRIP/EATS 	52
+Retail and grocery	43
+Transportation 	37
+
+
+
+
+
+
+7. Calculate the Monthly Amount Spent Growth For each month .
+
+select 
+Year,
+Month,
+round(
+(
+(Total_amount - lag(total_amount) over (order by year, month ) )/ 
+lag(total_amount) over (order by year, month ) )*100, 2) || '%' as Monthly_spent_growth
+ from 
+(select 
+extract (year from posted_date) as Year,
+extract (month from posted_date)as Month,
+Sum(amount) as Total_amount
+from 
+transactions
+group by extract (month from posted_date),
+extract (year from posted_date)
+order by extract (year from posted_date),
+extract (month from posted_date)
+)l
+
+
+
+
+year	month	monthly_spent_growth
+2022	1	NULL
+2022	2	87.42%
+2022	3	-48.04%
+2022	4	454.77%
+2022	5	-52.06%
+2022	6	250.90%
+2022	7	-13.50%
+2022	8	413.47%
+2022	9	-85.78%
+2022	10	31.55%
+2022	11	38.75%
+2022	12	-29.36%
+2023	1	186.66%
+2023	2	-85.54%
+2023	3	99.14%
+2023	4	59.47%
+2023	5	-25.86%
+2023	6	-54.22%
+2023	7	20.67%
+2023	8	20.92%
+2023	9	-20.96%
+2023	10	69.68%
+2023	11	4.27%
+2023	12	-43.45%
+2024	1	1.79%
+2024	2	25.70%
+2024	3	-95.68%
+2024	4	91.70%
+
+
+
+
+
+
+
+
+
+
+10. Calculate the total spending till each Wednesday of Month May 2023.
+select 
+week_no,
+sum(amount) as Total_amount
+from 
+(select *,
+case 
+    when 
+          extract (dow from posted_date) = '0'
+    then   'Sunday'
+   when 
+          extract (dow from posted_date) = '1'
+    then   'Monday'
+ when 
+          extract (dow from posted_date) = '2'
+    then   'Tuesday'
+ when 
+          extract (dow from posted_date) = '3'
+    then   'Wednesday'
+ when 
+          extract (dow from posted_date) = '4'
+    then   'Thrusday'
+ when 
+          extract (dow from posted_date) = '5'
+    then   'Friday'
+ when 
+          extract (dow from posted_date) = '6'
+    then   'Saturday' 
+end as day_of_week,
+case 
+ when
+ posted_date between '2023-05-01' and  '2023-05-07'
+then 
+ '1st- week'
+ when
+ posted_date between '2023-05-08'and  '2023-05-14'
+then 
+ '2nd- week'
+
+ when
+ posted_date between '2023-05-15'and  '2023-05-21'
+then 
+ '3rd- week'
+
+ when
+ posted_date between '2023-05-22'and  '2023-05-28' 
+then 
+ '4th- week'
+
+ when
+ posted_date between '2023-05-29'and  '2023-05-31'
+then 
+ '5th- week'
+end as Week_no 
+ from transactions
+where 
+extract (month from posted_date)='5' and extract (year from posted_date) = '2023'
+)l
+where day_of_week in ('Monday','Tuesday','Wednesday')
+group by week_no
+
+
+week_no	total_amount
+1st- week	75.98
+2nd- week	119.93
+3rd- week	73.28
+4th- week	1127.55
+5th- week	445.1
+
+
+
+11. Find months I year 2022 where no of under 5 $ transactions are more than no of 10 $ or more transactions
+
+with cte as (select extract (month from posted_date) as month ,
+count(*) as no_of_transactions
+
+ from 
+transactions
+where 
+amount <20 and extract( year from posted_date) ='2022'
+group by extract( month from posted_date)
+)
+,cte1 as (select extract (month from posted_date) as month ,
+count(*) as no_of_transactions
+
+ from 
+transactions
+where 
+amount >20 and extract (year from posted_date) ='2022'
+group by extract( month from posted_date)
+)
+select cte.month,
+cte.no_of_transactions as no_of_transactions_less_than_20$,
+cte1.no_of_transactions as no_of_transactions_more_than_20$
+ from cte
+join 
+cte1
+on cte.month=cte1.month
+where cte.no_of_transactions >cte1.no_of_transactions
+
+month	no_of_transactions_less_than_20$	no_of_transactions_more_than_20$
+2	10	7
+3	9	2
+8	48	23
+9	45	25
+10	39	18
+11	52	33
+12	32	18
+
+
+
+
+
+
+Average Spend On OTT platforms per month 
+
+with cte as (select 
+description,
+count(*) as no_of_transactions,
+sum(amount) as total_sum
+from transactions
+where description in ('NETFLIX.COM','Amazon Prime ','CRAVE ','Disney Plus ', 'CINEPLEX CINEMAS','LANDMARK CINEMAS ','GALAXY CINEMAS ')
+group by description
+order by sum(amount) desc )
+select 
+round (avg(total_sum)/24,2) as cinema_spent ,
+round ((select avg(total_sum)/24 from cte where description not like '%CINEMAS%'),2) as ott_spent
+from 
+cte
+where description like '%CINEMAS%'
+
+cinema_spent	ott_spent
+21.4	5.06
+
+So, I found out that on an average I spent about 21$ s per month on Cinemas and 5 $ per 
+Month on OTT platforms
+
+Find out percentile of transactions according to $ value for every month 
+table should be month name 20 % , 50 % , 80 % and rows should
+
+VERY  DIFFICULT QUESTION 
+
+with cte as (select 
+extract (month from posted_date) as month_name , 
+extract (year from posted_date) as year_name ,
+amount,
+category,
+((percent_rank() over (partition by extract (month from posted_date),extract (year from posted_date)  order by amount ))*100)::int as percentile
+ from transactions 
+)
+
+, cte2 as (select month_name,
+year_name,
+amount,
+percentile
+ from cte b
+group by month_name, year_name, percentile, amount 
+order by year_name, month_name)
+, 
+
+cte3 as (select * from cte2
+
+where percentile between 45 and 55
+order by year_name , month_name)
+
+
+, cte4 as (select month_name,
+year_name,
+max(percentile)
+from cte3 
+group by month_name,
+year_name
+order by year_name , month_name)
+
+, cte5 as (select a.*,
+b.amount
+ from cte4 a 
+join 
+cte3 b on b.month_name=a.month_name
+and 
+b.year_name=a.year_name
+order by year_name , month_name)
+
+,cte6 as (select month_name,
+year_name,
+round (avg(amount),2) as amount_50_percentile
+from
+cte5
+group by month_name,
+year_name,
+max
+order by year_name , month_name)
+
+,cte7 as (select * from cte2
+
+where percentile between 75 and 85
+order by year_name , month_name)
+
+
+, cte8 as (select month_name,
+year_name,
+max(percentile)
+from cte7 
+group by month_name,
+year_name
+order by year_name , month_name),
+
+ cte9 as (select a.*,
+b.amount
+ from cte8 a 
+join 
+cte7 b on b.month_name=a.month_name
+and 
+b.year_name=a.year_name
+order by year_name , month_name)
+
+,cte10 as (select month_name,
+year_name,
+round (avg(amount),2) as amount_80_percentile
+from
+cte9
+group by month_name,
+year_name,
+max
+order by year_name , month_name)
+
+select cte6.*,
+cte10.amount_80_percentile as amount_80_percentile 
+ from cte10
+join cte6
+on cte6.month_name=cte10.month_name 
+and cte6.year_name= cte10.year_name
+
+
+
+month_name	year_name	amount_50_percentile	amount_80_percentile
+2	2022	19.17	32.9
+4	2022	51.28	112.41
+5	2022	26.56	65.45
+6	2022	26.56	60.94
+7	2022	28.49	58.51
+8	2022	11.86	32.56
+9	2022	12.2	27.99
+10	2022	12.53	29.16
+11	2022	13.48	30.92
+12	2022	15.96	36.26
+1	2023	11.04	25.45
+2	2023	10.97	15.68
+3	2023	11.63	23.08
+4	2023	11.13	31.61
+5	2023	19.71	39.9
+6	2023	16.33	25.97
+7	2023	16.11	38.37
+8	2023	18.54	34.39
+9	2023	16.99	43.66
+10	2023	13.55	35.67
+11	2023	28.2	57.67
+12	2023	17.44	42.24
+1	2024	30.59	44
+2	2024	16.49	46.21
+
+
+
+
+
+15. Calculate the total spending for each quarter.
+16. Find transactions with amounts rounded to the nearest dollar.
+17. Identify transactions with duplicate entries.
+18. Determine the average transaction amount for each category.
+19. Retrieve transactions with amounts falling within a specified range.
+20. Calculate the total spending for each year.
+
+
+1. *Finding Anomalies*:
+   Identify transactions that deviate significantly from the average spending pattern, considering factors such as category, time of day, and frequency.
+
+2. *Seasonal Analysis*:
+   Calculate the seasonal spending pattern by analyzing historical data to identify trends and fluctuations in spending across different times of the year.
+
+3. *Predictive Analysis*:
+   Build a predictive model to forecast future spending based on historical data, incorporating factors such as income, expenses, and economic indicators.
+
+4. *Cluster Analysis*:
+   Group transactions into clusters based on similarities in spending patterns, allowing for the identification of distinct consumer behavior segments.
+
+5. *Optimization Problem*:
+   Formulate an optimization problem to determine the most cost-effective allocation of funds across different expense categories, subject to constraints such as budget limits and savings goals.
