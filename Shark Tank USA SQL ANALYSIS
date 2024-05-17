@@ -1,0 +1,1436 @@
+
+1.	What is the total number of pitches made in each season?
+
+
+
+select 
+season_number,
+count(*) as no_of_pitches
+ from  StartupPitch 
+group by season_number
+order by season_number
+season_number	no_of_pitches
+1	64
+2	36
+3	60
+4	103
+5	116
+6	116
+7	116
+8	96
+9	96
+10	92
+11	96
+12	100
+13	96
+14	87
+15	79
+
+
+
+
+
+2.	How many pitches were made by entrepreneurs from each state in each season ?
+
+select 
+season_number,
+Pitchers_State,
+count(*) as no_of_pitches
+ from  StartupPitch 
+group by season_number,
+Pitchers_State
+order by season_number, 
+Pitchers_State
+season_number	pitchers_state	no_of_pitches
+1	CA	20
+1	CO	1
+1	FL	5
+1	GA	3
+1	IA	1
+1	IL	5
+1	IN	1
+1	MA	1
+1	MD	1
+1	MN	1
+1	NC	2
+1	NJ	2
+1	NV	1
+1	NY	5
+1	OH	1
+1	OR	2
+1	PA	3
+1	SC	1
+1	TN	2
+1	TX	4
+1	VA	2
+2	AR	1
+2	AZ	2
+2	CA	5
+2	FL	4
+2	GA	1
+2	IL	4
+2	IN	1
+2	KS	1
+2	MD	2
+2	MN	1
+2	NC	2
+2	NJ	1
+2	NY	1
+2	OH	1
+2	OK	1
+2	OR	1
+2	PA	1
+2	SC	1
+2	TN	1
+2	TX	3
+2	WA	1
+3	AL	1
+3	AZ	2
+3	CA	17
+3	CO	1
+3	CT	3
+3	FL	7
+3	GA	1
+3	ID	1
+3	IL	1
+3	IN	1
+3	KS	1
+3	MN	1
+3	MT	1
+3	NC	2
+3	NY	4
+3	OH	3
+3	OR	2
+3	PA	3
+3	RI	1
+3	TX	6
+3	UT	1
+4	AR	1
+4	AZ	2
+4	CA	31
+4	CO	7
+4	CT	1
+4	FL	7
+4	GA	2
+4	ID	1
+4	IL	1
+4	LA	2
+4	MA	3
+4	MN	2
+4	MO	1
+4	MS	1
+4	NC	1
+4	NE	1
+4	NH	1
+4	NJ	5
+4	NV	1
+4	NY	7
+4	OH	2
+4	OK	1
+4	OR	2
+4	PA	4
+4	RI	1
+4	SC	1
+4	TX	4
+4	UT	3
+4	VA	1
+4	VT	2
+4	WA	4
+5	AK	1
+5	AZ	2
+5	CA	41
+5	DC	3
+5	DE	1
+5	FL	3
+5	GA	5
+5	IL	7
+5	IN	1
+5	KS	1
+5	KY	1
+5	MA	2
+5	MI	2
+5	MO	1
+5	MS	1
+5	NC	1
+5	NJ	2
+5	NV	1
+5	NY	10
+5	OH	1
+5	OR	1
+5	TN	1
+5	TX	13
+5	UT	9
+5	VA	2
+5	WA	3
+6	AZ	1
+6	CA	28
+6	CO	3
+6	CT	1
+6	DC	1
+6	FL	6
+6	GA	7
+6	ID	1
+6	IL	3
+6	IN	1
+6	KY	1
+6	MA	2
+6	MI	3
+6	MO	2
+6	NC	4
+6	NV	2
+6	NY	15
+6	OH	4
+6	OK	1
+6	OR	7
+6	PA	3
+6	RI	1
+6	SC	1
+6	TX	7
+6	UT	4
+6	VA	3
+6	WA	3
+6	WI	1
+7	CA	4
+7	CO	2
+7	FL	1
+7	GA	1
+7	HI	1
+7	MA	2
+7	NV	1
+7	NY	5
+7	OH	1
+7	TX	1
+7	NULL	97
+8	AZ	1
+8	CA	22
+8	CO	6
+8	CT	1
+8	FL	8
+8	HI	3
+8	IL	4
+8	LA	1
+8	MA	7
+8	MN	1
+8	NC	3
+8	NJ	1
+8	NV	2
+8	NY	10
+8	OH	4
+8	OR	3
+8	PA	4
+8	TN	1
+8	TX	8
+8	UT	3
+8	VT	1
+8	WA	1
+8	WI	1
+9	AL	1
+9	AZ	3
+9	CA	28
+9	CO	3
+9	DC	1
+9	FL	6
+9	GA	2
+9	IL	4
+9	MA	4
+9	MD	2
+9	MI	3
+9	MS	1
+9	NC	2
+9	NJ	1
+9	NV	1
+9	NY	11
+9	Non-US	1
+9	OH	2
+9	OR	1
+9	PA	2
+9	TX	4
+9	UT	2
+9	VA	2
+9	VT	1
+9	WA	3
+9	WI	1
+9	NULL	4
+10	CA	11
+10	CT	1
+10	DC	1
+10	GA	1
+10	IL	2
+10	MI	1
+10	MO	2
+10	NC	2
+10	NJ	1
+10	NY	2
+10	OK	1
+10	TX	5
+10	UT	1
+10	WI	1
+10	NULL	60
+11	LA	1
+11	NY	1
+11	TN	1
+11	VA	1
+11	NULL	92
+12	NJ	1
+12	NY	1
+12	OR	1
+12	NULL	97
+13	NULL	96
+14	CA	3
+14	CO	2
+14	NULL	82
+15	AZ	2
+15	CA	11
+15	CO	1
+15	FL	3
+15	GA	1
+15	IL	3
+15	IN	1
+15	LA	1
+15	MD	1
+15	MN	1
+15	NJ	2
+15	NV	1
+15	NY	5
+15	Non-US	2
+15	OH	1
+15	OR	1
+15	PA	1
+15	TN	1
+15	TX	3
+15	UT	1
+15	VI	1
+15	WA	2
+15	WI	1
+15	NULL	32
+
+
+
+
+
+3.	What is the distribution of genders among pitchers?
+select 
+Season_Number,
+Pitchers_Gender,
+count(*)
+ from StartupPitch
+group by Season_Number,
+Pitchers_Gender
+order by Season_Number,
+Pitchers_Gender
+
+season_number	pitchers_gender	count
+1	Female	18
+1	Male	37
+1	Mixed Team	9
+2	Female	11
+2	Male	22
+2	Mixed Team	3
+3	Female	14
+3	Male	39
+3	Mixed Team	7
+4	Female	26
+4	Male	63
+4	Mixed Team	14
+5	Female	27
+5	Male	70
+5	Mixed Team	19
+6	Female	31
+6	Male	66
+6	Mixed Team	19
+7	Female	27
+7	Male	70
+7	Mixed Team	19
+8	Female	25
+8	Male	57
+8	Mixed Team	14
+9	Female	22
+9	Male	62
+9	Mixed Team	12
+10	Female	20
+10	Male	51
+10	Mixed Team	21
+11	Female	24
+11	Male	48
+11	Mixed Team	24
+12	Female	27
+12	Male	40
+12	Mixed Team	28
+12	NULL	5
+13	Female	32
+13	Male	36
+13	Mixed Team	26
+13	NULL	2
+14	Female	26
+14	Male	42
+14	Mixed Team	19
+15	Female	25
+15	Male	32
+15	Mixed Team	22
+
+
+
+
+5.	How does the viewership vary between episodes aired in different seasons?
+with cte as 
+(select 
+Season_Number,
+Episode_Number,
+min((US_Viewership)::float) as viewership
+ from StartupPitch
+group by Season_Number,
+Episode_Number
+order by Season_Number,
+Episode_Number)
+
+select *,
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+1
+and b.episode_number=a.episode_number
+) as viewership_season_2
+,
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+3
+and b.episode_number=a.episode_number
+) as viewership_season_3,
+
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+4
+and b.episode_number=a.episode_number
+) as viewership_season_4,
+
+
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+5
+and b.episode_number=a.episode_number
+) as viewership_season_5,
+
+
+
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+6
+and b.episode_number=a.episode_number
+) as viewership_season_6,
+
+
+
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+7
+and b.episode_number=a.episode_number
+) as viewership_season_7,
+
+
+
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+8
+and b.episode_number=a.episode_number
+) as viewership_season_8,
+
+
+
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+9
+and b.episode_number=a.episode_number
+) as viewership_season_9,
+
+
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+10
+and b.episode_number=a.episode_number
+) as viewership_season_10,
+
+
+
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+11
+and b.episode_number=a.episode_number
+) as viewership_season_11,
+
+
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+12
+and b.episode_number=a.episode_number
+) as viewership_season_12,
+
+
+
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+13
+and b.episode_number=a.episode_number
+) as viewership_season_14,
+
+
+
+(select viewership
+ from 
+cte b
+where season_number=a.season_number+14
+and b.episode_number=a.episode_number
+) as viewership_season_15
+ from 
+cte a
+where season_number=1
+
+
+now please study recurvsive cte to avoid using same code again and again. 
+
+
+
+
+
+6.	What is the average valuation requested by startups in each industry?
+
+select
+Season_Number,
+Industry,
+round (avg (Valuation_Requested),2) as avg_valuation
+from
+StartupPitch
+group by Season_Number, Industry
+
+
+
+season_number	industry	round
+8	Lifestyle/Home	2684368.85
+1	Fitness/Sports/Outdoors	943586.67
+2	Health/Wellness	5000000
+9	Automotive	13500000
+7	Children/Education	2754444.42
+9	Software/Tech	3583333.25
+14	Children/Education	4277777.78
+6	Fitness/Sports/Outdoors	2588541.63
+4	Business Services	1388889
+3	Children/Education	666667
+5	Media/Entertainment	20000000
+11	Pet Products	13235294
+2	Media/Entertainment	5000000
+2	Fashion/Beauty	777777.78
+5	Uncertain/Other	175000
+12	Children/Education	3733333.33
+7	Fitness/Sports/Outdoors	4737840.14
+6	Media/Entertainment	10125000
+7	Software/Tech	4400000
+8	Pet Products	1433333.4
+3	Lifestyle/Home	545000
+3	Software/Tech	777576
+6	Food and Beverage	2515451.11
+2	Children/Education	600000
+12	Fitness/Sports/Outdoors	10027777.8
+7	Uncertain/Other	1083333.5
+13	Liquor/Alcohol	3000000
+7	Pet Products	5000000
+10	Fashion/Beauty	3057738.07
+4	Automotive	1333333.5
+13	Electronics	2000000
+10	Uncertain/Other	5250000
+7	Media/Entertainment	4625000
+15	Fitness/Sports/Outdoors	1881666.7
+12	Liquor/Alcohol	25000000
+8	Fashion/Beauty	3075378.8
+6	Software/Tech	5060185.25
+4	Health/Wellness	1180000
+11	Food and Beverage	4213988.1
+10	Health/Wellness	4287698.33
+3	Pet Products	198039
+1	Lifestyle/Home	589394
+13	Food and Beverage	9673809.5
+1	Automotive	5000000
+11	Business Services	4231150.83
+10	Children/Education	3719047.57
+5	Food and Beverage	2181868.12
+3	Fitness/Sports/Outdoors	3251894
+4	Software/Tech	1625000
+2	Lifestyle/Home	703333.33
+8	Food and Beverage	7259920.61
+13	Fitness/Sports/Outdoors	5506666.6
+1	Business Services	3966666.5
+8	Software/Tech	4660714.29
+13	Media/Entertainment	10000000
+5	Green/CleanTech	3232143
+7	Travel	1000000
+14	Lifestyle/Home	3021999.96
+8	Children/Education	2975000
+15	Pet Products	3208333.33
+12	Business Services	7507936.67
+4	Pet Products	304166.75
+15	Software/Tech	7875000
+7	Lifestyle/Home	4010317.44
+7	Liquor/Alcohol	6474522.33
+4	Travel	2000000
+15	Electronics	12500000
+4	Fitness/Sports/Outdoors	2125714.29
+9	Pet Products	4148611
+5	Children/Education	983181.87
+4	Lifestyle/Home	2425765.85
+15	Children/Education	1925000
+10	Media/Entertainment	500000
+6	Lifestyle/Home	1955303.05
+10	Software/Tech	3400000
+6	Automotive	1333333
+4	Children/Education	1073597.78
+9	Business Services	2250000
+11	Software/Tech	5464285.67
+9	Green/CleanTech	8000000
+1	Children/Education	1347558
+9	Food and Beverage	5700740.73
+9	Media/Entertainment	2277777.67
+15	Food and Beverage	4720982.19
+9	Travel	1000000
+15	Business Services	4333333.33
+1	Food and Beverage	1089611.08
+15	Lifestyle/Home	4287427.88
+3	Food and Beverage	1639393.91
+8	Media/Entertainment	2000000
+9	Lifestyle/Home	4166666.68
+4	Media/Entertainment	8852941
+12	Automotive	2250000
+5	Travel	1333333
+2	Food and Beverage	1262500
+15	Liquor/Alcohol	3500000
+2	Uncertain/Other	1250000
+13	Business Services	5900000
+2	Automotive	2000000
+6	Travel	6000000
+10	Food and Beverage	4520634.9
+14	Fashion/Beauty	3706944.42
+12	Software/Tech	10000000
+8	Health/Wellness	5333333.33
+2	Travel	200000
+6	Electronics	5500000
+7	Fashion/Beauty	2773245.63
+15	Uncertain/Other	3275000
+12	Fashion/Beauty	3109848.55
+5	Electronics	11166666.5
+13	Pet Products	3541666.75
+4	Green/CleanTech	9090909
+6	Children/Education	3093039.24
+7	Food and Beverage	2809920.67
+1	Fashion/Beauty	699583.33
+14	Software/Tech	7321250
+5	Business Services	1250000
+3	Fashion/Beauty	892087.56
+1	Health/Wellness	300000
+14	Uncertain/Other	3666666.67
+12	Lifestyle/Home	3873750
+1	Media/Entertainment	5750000
+1	Green/CleanTech	1250000
+3	Media/Entertainment	3350000
+5	Lifestyle/Home	1528333.33
+12	Uncertain/Other	4000000
+11	Fashion/Beauty	3359090.91
+11	Children/Education	2495403.67
+15	Health/Wellness	2250000
+4	Liquor/Alcohol	500000
+12	Health/Wellness	14696428.5
+7	Green/CleanTech	500000
+2	Pet Products	666667
+14	Food and Beverage	4061552.48
+10	Pet Products	2935185.22
+14	Health/Wellness	5861111.17
+6	Pet Products	2714285.71
+5	Fitness/Sports/Outdoors	4458333.4
+5	Pet Products	684848.33
+10	Automotive	1233333.33
+9	Health/Wellness	6758333.33
+8	Green/CleanTech	1500000
+5	Software/Tech	3330303
+5	Health/Wellness	2623299.43
+13	Automotive	20000000
+7	Automotive	250000
+13	Children/Education	1187500
+8	Travel	4375000
+13	Software/Tech	2395833.25
+12	Electronics	2750000
+14	Electronics	2500000
+1	Software/Tech	2688889
+13	Fashion/Beauty	4268981.5
+12	Food and Beverage	3926734.69
+11	Lifestyle/Home	3703383.47
+6	Fashion/Beauty	3030570.92
+8	Liquor/Alcohol	12500000
+13	Uncertain/Other	51500000
+3	Green/CleanTech	10000000
+3	Electronics	100000
+2	Green/CleanTech	450000
+2	Fitness/Sports/Outdoors	906666.6
+10	Lifestyle/Home	4297002.44
+4	Electronics	503846
+3	Travel	1666667
+10	Liquor/Alcohol	20000000
+15	Media/Entertainment	625000
+13	Health/Wellness	7383928.57
+4	Fashion/Beauty	776587.28
+6	Health/Wellness	15050000
+9	Fashion/Beauty	3166666.69
+4	Food and Beverage	1587904.93
+3	Business Services	1075000
+8	Fitness/Sports/Outdoors	4206410.23
+7	Health/Wellness	5777778
+12	Pet Products	3333333.33
+11	Fitness/Sports/Outdoors	2406994.13
+14	Fitness/Sports/Outdoors	1333333
+6	Green/CleanTech	2700000
+4	Uncertain/Other	750000
+14	Automotive	4000000
+14	Pet Products	1000000
+2	Electronics	1000000
+1	Electronics	5316666.67
+9	Children/Education	3181481.44
+1	Pet Products	1375000
+11	Health/Wellness	5133333.33
+9	Fitness/Sports/Outdoors	2669607.88
+5	Fashion/Beauty	1984981.69
+15	Fashion/Beauty	2757142.86
+10	Business Services	8142857
+13	Lifestyle/Home	4549242.41
+10	Fitness/Sports/Outdoors	3554166.6
+3	Automotive	1000000
+
+
+7.	Is there a correlation between the number of sharks in a deal and the total deal amount?
+SELECT CORR(revenue, units_sold) AS correlation_coefficient
+      FROM Sales;
+            0.077
+
+8.	How many entrepreneurs pitched multiple times? What is the distribution of their pitches across seasons?
+  select 
+startup_name,
+count(*) as no_of_pitches
+ from StartupPitch
+ group by startup_name
+having count(*) >1
+
+
+startup_name	no_of_pitches
+EchoValleyMeats	2
+FortMagic	2
+CopadiVino	2
+	
+
+season_number	startup_name	got_deal	deal_valuation	number_of_sharks_in_deal
+2	CopadiVino	0	NULL	NULL
+3	CopadiVino	0	NULL	NULL
+4	EchoValleyMeats	0	NULL	NULL
+5	FortMagic	0	NULL	NULL
+6	EchoValleyMeats	1	600000	1
+13	FortMagic	0	NULL	NULL
+
+
+with cte as (select 
+startup_name,
+count(*) as no_of_pitches
+ from StartupPitch
+ group by startup_name
+having count(*) >1)
+
+
+select 
+StartupPitch.Season_Number,
+cte.startup_name,
+StartupPitch.Got_Deal,
+StartupPitch.Deal_Valuation,
+StartupPitch.Number_of_Sharks_in_Deal
+ from 
+cte join 
+StartupPitch
+on 
+StartupPitch.startup_name= cte.startup_name
+9.	Can we identify any trends in the success rate of deals over seasons?
+with cte as (select 
+Season_Number,
+Industry,
+sum((Got_Deal)::float) as total_deals
+from 
+StartupPitch
+group by 
+Season_Number,
+Industry
+order by 
+Season_Number,
+sum((Got_Deal)::float) desc )
+
+, cte2 as (select
+* ,
+dense_rank() over (partition by season_number order by total_deals desc ) as dense_ranks 
+from
+cte )
+
+select
+ season_number,
+industry,
+total_deals
+from
+ cte2
+where dense_ranks <=3
+10.	Is there a relationship between the amount of investment by individual sharks and the equity offered to them in deals?
+
+Based on the provided correlation coefficients between the investments made by the sharks and the equity offered to them, we can assess their tendency to offer more money in exchange for more equity. Here's a rating of the sharks based on this tendency, in ascending order:
+
+Barbara Corcoran:
+Correlation Coefficient: Approximately -0.082
+Interpretation: Weak negative correlation, suggesting a slight tendency to offer less money for more equity, but the relationship is not strong.
+Kevin O'Leary:
+Correlation Coefficient: Approximately -0.153
+Interpretation: Weak negative correlation, indicating a slight tendency to offer less money for more equity, but stronger compared to Barbara Corcoran's correlation.
+Mark Cuban:
+Correlation Coefficient: Approximately 0.036
+Interpretation: Very weak positive correlation, suggesting a slight tendency to offer more money for more equity, but the relationship is not strong.
+Lori Greiner:
+Correlation Coefficient: Approximately -0.133
+Interpretation: Weak negative correlation, indicating a tendency to offer less money for more equity, with a somewhat stronger relationship compared to Barbara Corcoran's correlation.
+Robert Herjavec:
+Correlation Coefficient: Approximately 0.213
+Interpretation: Moderate positive correlation, suggesting a noticeable tendency to offer more money for more equity, with a stronger relationship compared to the previous correlations.
+Daymond John:
+Correlation Coefficient: Approximately 0.389
+Interpretation: Strong positive correlation, indicating a significant tendency to offer more money for more equity, with the strongest relationship among the correlations provided.
+Based on these ratings, the sharks can be ranked in ascending order of their tendency to offer more money in exchange for more equity:
+
+Barbara Corcoran
+Kevin O'Leary
+Mark Cuban
+Lori Greiner
+Robert Herjavec
+Daymond John
+
+
+However, Correlation does not imply causation: While correlation coefficients indicate the strength and direction of the relationship between two variables, they do not establish causation. In this case, a correlation between the amount of investment and the equity offered does not necessarily.
+
+select 
+
+corr (Barbara_Corcoran_Investment_Amount ,
+     Barbara_Corcoran_Investment_Equity) as Barbara_Corcoran, 
+    corr (Mark_Cuban_Investment_Amount ,
+     Mark_Cuban_Investment_Equity) as Mark_Cuban ,
+    corr( Lori_Greiner_Investment_Amount ,
+     Lori_Greiner_Investment_Equity ) as Lori_Greiner,
+    corr (Robert_Herjavec_Investment_Amount ,
+     Robert_Herjavec_Investment_Equity ) as Robert_Herjavec,
+    corr (Daymond_John_Investment_Amount,
+     Daymond_John_Investment_Equity)as Daymond_John ,
+    corr (Kevin_O_Leary_Investment_Amount ,
+     Kevin_O_Leary_Investment_Equity) as Kevin_O_Leary
+from 
+StartupPitch
+
+barbara_corcoran	mark_cuban	lori_greiner	robert_herjavec	daymond_john	kevin_o_leary
+-0.08202774	0.036361762	-0.133220811	0.2126202544452121	0.3893152274418071	-0.153355793
+
+
+
+
+11.	How does the viewership of episodes correlate with the total deal amount?
+select 
+corr(US_Viewership::float ,
+    Total_Deal_Amount::float)
+from 
+StartupPitch
+
+NO AS THERE IS VERY WEAK CORELATION NOTHING CAN BE CONCLUDED. 
+-0.006809359363517558
+
+12.	Are there any significant differences in valuation requested based on the presence of certain sharks during the pitch?
+
+
+
+Which shark is the best negotiator?
+
+with cte as (SELECT 
+    round (
+        (0.3 * ((Barbara_Corcoran_Investment_Amount - Original_Ask_Amount) / Original_Ask_Amount)) + 
+        (0.3 * (1 - (Barbara_Corcoran_Investment_Equity / Original_Offered_Equity))) + 
+        (0.2 * (Total_Deal_Amount / Original_Ask_Amount)) + 
+        (0.2 * (Total_Deal_Equity / Original_Offered_Equity)), 2
+    ) AS Barbara_Corcoran_Weighted_Score,
+    
+    round (
+        (0.3 * ((Mark_Cuban_Investment_Amount - Original_Ask_Amount) / Original_Ask_Amount)) + 
+        (0.3 * (1 - (Mark_Cuban_Investment_Equity / Original_Offered_Equity))) + 
+        (0.2 * (Total_Deal_Amount / Original_Ask_Amount)) + 
+        (0.2 * (Total_Deal_Equity / Original_Offered_Equity))
+   ,2 ) AS Mark_Cuban_Weighted_Score,
+    
+   round  (
+        (0.3 * ((Lori_Greiner_Investment_Amount - Original_Ask_Amount) / Original_Ask_Amount)) + 
+        (0.3 * (1 - (Lori_Greiner_Investment_Equity / Original_Offered_Equity))) + 
+        (0.2 * (Total_Deal_Amount / Original_Ask_Amount)) + 
+        (0.2 * (Total_Deal_Equity / Original_Offered_Equity))
+    ,2) AS Lori_Greiner_Weighted_Score,
+    
+    round (
+        (0.3 * ((Robert_Herjavec_Investment_Amount - Original_Ask_Amount) / Original_Ask_Amount)) + 
+        (0.3 * (1 - (Robert_Herjavec_Investment_Equity / Original_Offered_Equity))) + 
+        (0.2 * (Total_Deal_Amount / Original_Ask_Amount)) + 
+        (0.2 * (Total_Deal_Equity / Original_Offered_Equity))
+    ,2) AS Robert_Herjavec_Weighted_Score,
+    
+    round (
+        (0.3 * ((Daymond_John_Investment_Amount - Original_Ask_Amount) / Original_Ask_Amount)) + 
+        (0.3 * (1 - (Daymond_John_Investment_Equity / Original_Offered_Equity))) + 
+        (0.2 * (Total_Deal_Amount / Original_Ask_Amount)) + 
+        (0.2 * (Total_Deal_Equity / Original_Offered_Equity))
+    ,2) AS Daymond_John_Weighted_Score,
+    
+   round (
+        (0.3 * ((Kevin_O_Leary_Investment_Amount - Original_Ask_Amount) / Original_Ask_Amount)) + 
+        (0.3 * (1 - (Kevin_O_Leary_Investment_Equity / Original_Offered_Equity))) + 
+        (0.2 * (Total_Deal_Amount / Original_Ask_Amount)) + 
+        (0.2 * (Total_Deal_Equity / Original_Offered_Equity))
+    ,2) AS Kevin_O_Leary_Weighted_Score
+FROM 
+    StartupPitch
+where Got_Deal = '1')
+
+select avg (Kevin_O_Leary_Weighted_Score) as Kevin_O_Leary_Weighted_Score,
+(
+select avg (Robert_Herjavec_Weighted_Score) as Robert_Herjavec_Weighted_Score
+
+from cte 
+
+),
+(
+
+select avg (Daymond_John_Weighted_Score) as Daymond_John_Weighted_Score
+
+from cte 
+
+
+),
+
+(
+
+select avg (Lori_Greiner_Weighted_Score) as Lori_Greiner_Weighted_Score
+
+from cte 
+
+
+)
+,
+
+
+(
+select avg (Mark_Cuban_Weighted_Score) as Mark_Cuban_Weighted_Score
+
+from cte 
+
+
+
+),
+
+(
+select avg (Barbara_Corcoran_Weighted_Score) as Barbara_Corcoran_Weighted_Score
+
+from cte 
+
+
+)
+
+
+from cte
+kevin_o_leary_weighted_score	robert_herjavec_weighted_score	daymond_john_weighted_score
+0.45801587301587301587	0.48503937007874015748	0.49213675213675213675
+
+
+lori_greiner_weighted_score	mark_cuban_weighted_score	barbara_corcoran_weighted_score
+0.46632558139534883721	0.52566265060240963855	0.41015503875968992248
+
+
+Shark
+mark cuban
+daymond john
+robert herjavec
+lori greiner
+kevin o leary
+barbara corcoran
+
+
+
+
+Which pitcher is the best negotiator ?
+SELECT 
+  Startup_Name,
+round ((0.3 * ((Total_Deal_Amount - Original_Ask_Amount) / Original_Ask_Amount)) + 
+        (0.3 * (1 - (Total_Deal_Equity / Original_Offered_Equity))) + 
+        (0.2 * (Total_Deal_Amount / Original_Ask_Amount)) + 
+        (0.2 * (Total_Deal_Equity / Original_Offered_Equity)),2) as Weighted_Negotiation_Effectiveness_Score
+from 
+StartupPitch
+where 
+Got_Deal='1'
+order by 
+round ((0.3 * ((Total_Deal_Amount - Original_Ask_Amount) / Original_Ask_Amount)) + 
+        (0.3 * (1 - (Total_Deal_Equity / Original_Offered_Equity))) + 
+        (0.2 * (Total_Deal_Amount / Original_Ask_Amount)) + 
+        (0.2 * (Total_Deal_Equity / Original_Offered_Equity)),2) desc 
+limit 3 
+startup_name	weighted_negotiation_effectiveness_score
+MokiDoorstep	8
+WineBalloon	4.67
+DBestProducts	2.96
+
+
+
+Name the founders sold 100 percent stake to sharks? How many of these founders sold the company at the valuation initially offered to sharks? 
+select startup_name,
+business_description,
+Original_Ask_Amount,
+Original_Offered_Equity,
+Total_Deal_Amount
+from 
+StartupPitch
+where 
+Total_Deal_Equity ='100'
+startup_name	business_description	original_ask_amount	original_offered_equity	total_deal_amount
+ClassroomJams	Classroom Jams - Education	250000	10	250000
+TurboBaster	TurboBaster - Kitchen Tools	35000	35	35000
+HyConn	HyConn - Productivity Tools fire hydrant	500000	40	1250000
+WineBalloon	Wine Balloon - Wine Accessories	40000	30	400000
+CoolWraps	CoolWraps - Holiday Cheer	100000	40	250000
+Evrewares	Evrewares - Party Supplies	100000	30	200000
+RokBlok	RokBlok - portable record player	300000	15	500000
+Hugo'sAmazingTape	Hugo's Amazing Tape - tape that sticks to itself	50000	50	100000
+MokiDoorstep	Moki Doorstep - step to reach roof of car	150000	5	3000000
+
+How many of these founders sold the company at the valuation initially offered to sharks? 
+
+select count(*)
+from 
+StartupPitch
+where 
+Total_Deal_Equity ='100'
+and (((Total_Deal_Amount- Valuation_Requested)/Total_Deal_Amount)*100)='0'
+
+4 companies 
+
+
+
+Most expensive deal in shark tank history?
+
+with cte as (select 
+max(Total_Deal_Amount) as max_amount
+ from startupPitch a )
+
+
+select startupPitch.startup_name,
+total_deal_amount
+from 
+startupPitch
+join
+cte 
+on 
+cte.max_amount= startupPitch.Total_Deal_Amount
+
+
+startup_name	total_deal_amount
+AirCar	5000000
+
+
+
+please list max amount invested by each shark 
+
+Max amount invested by each shark 
+select max (Barbara_Corcoran_Investment_Amount)as Barbara_Corcoran_Investment_Amount,
+(  select max (Mark_Cuban_Investment_Amount) from StartupPitch ) as Mark_Cuban_Investment_Amount,
+(  select max (Lori_Greiner_Investment_Amount) from StartupPitch )as Lori_Greiner_Investment_Amount,
+(  select max (Robert_Herjavec_Investment_Amount) from StartupPitch)as Robert_Herjavec_Investment_Amount,
+(  select max (Kevin_O_Leary_Investment_Amount) from StartupPitch)as Kevin_O_Leary_Investment_Amount
+ from StartupPitch
+
+
+barbara_corcoran	mark_cuban	lori_greiner	robert_herjavec	kevin_o_leary
+700000	2000000	1175000	5000000	2500000
+				
+
+
+
+Biggest investment of all sharks
+with Barbara_Corcoran as (select 
+startup_name,
+business_description,
+industry,
+Barbara_Corcoran_Investment_Amount ,
+dense_rank() over (order by Barbara_Corcoran_Investment_Amount desc ) 
+as Barbara_Corcoran_rank
+ from StartupPitch
+where Got_Deal='1'
+and 
+Barbara_Corcoran_Investment_Amount is not null
+order by Mark_Cuban_Investment_Amount desc 
+limit 3
+)
+
+,Mark_Cuban  as (select Mark_Cuban_Investment_Amount ,
+
+
+startup_name,
+business_description,
+industry,
+dense_rank() over (order by Mark_Cuban_Investment_Amount desc ) 
+as Mark_Cuban_rank
+ from StartupPitch
+where Got_Deal='1'
+and 
+Mark_Cuban_Investment_Amount is not null
+order by Mark_Cuban_Investment_Amount desc 
+limit 3 
+)
+
+,Lori_Greiner  as (select Lori_Greiner_Investment_Amount ,
+startup_name,
+business_description,
+industry,
+dense_rank() over (order by Lori_Greiner_Investment_Amount desc ) 
+as Lori_Greiner_rank
+ from StartupPitch
+where Got_Deal='1'
+and 
+Lori_Greiner_Investment_Amount is not null
+order by Lori_Greiner_Investment_Amount desc 
+limit 3 
+)
+
+
+,Robert_Herjavec  as (select Robert_Herjavec_Investment_Amount ,
+startup_name,
+business_description,
+industry,
+dense_rank() over (order by Robert_Herjavec_Investment_Amount desc ) 
+as Robert_Herjavec_rank
+ from StartupPitch
+where Got_Deal='1'
+and 
+Robert_Herjavec_Investment_Amount is not null
+order by Robert_Herjavec_Investment_Amount desc 
+limit 3 
+)
+
+
+, Kevin_O_Leary  as (select  Kevin_O_Leary_Investment_Amount ,
+startup_name,
+business_description,
+industry,
+
+dense_rank() over (order by  Kevin_O_Leary_Investment_Amount desc ) 
+as  Kevin_O_Leary_rank
+ from StartupPitch
+where Got_Deal='1'
+and 
+ Kevin_O_Leary_Investment_Amount is not null
+order by  Kevin_O_Leary_Investment_Amount desc 
+limit 3 
+)
+select 
+ Barbara_Corcoran_Investment_Amount ,
+startup_name,
+business_description,
+industry
+ from Barbara_Corcoran
+
+kevin_o_leary_
+investment_amount	startup_name	business_description	industry
+2500000	Zipz	Zipz - Alcoholic Beverages	Food and Beverage
+1000000	HowDoYouRoll?	HDYR Sushi Bars - Specialty Food	Food and Beverage
+1000000	Vengo	slim digital vending machine	Food and Beverage
+
+robert_herjavec
+_investment_amount	startup_name	business_description	industry
+5000000	AirCar	AirCar Zero Pollution Motors - Automotive	Travel
+3000000	SynDaverLabs	SynDaver Labs - Education	Health/Wellness
+1200000	Plunge	Cold plunge tubs	Health/Wellness
+
+
+
+lori_greiner_
+investment_
+amount	startup_name	business_description	industry
+1175000	DBestProducts	carriers and portable carts	Lifestyle/Home
+1000000	Vengo	slim digital vending machine	Food and Beverage
+1000000	Fizzics	device to enhance the head and the flavor of bottled or canned beers	Liquor/Alcohol
+
+
+
+mark_cuban_investment_amount	startup_name	business_description	industry
+2000000	TenThirtyOneProductions	Ten Thirty One Haunted Hayrides - Entertainment	Media/Entertainment
+1750000	RuggedManiac	Rugged Maniac - Entertainment	Fitness/Sports/Outdoors
+1500000	Sworkit	personalized customizeable workout app	Fitness/Sports/Outdoors
+
+
+barbara_corcoran_investment_amount	startup_name	business_description	industry
+230000	Mr.Tod'sPieFactory	Mr. Tod's Pie Factory - Specialty Food	Food and Beverage
+50000	AvaTheElephant	Ava The Elephant - Baby and Child Care	Health/Wellness
+250000	StressFreeKids	Stress Free Kids - Baby and Child Care	Children/Education
+
+
+
+
+
+
+
+
+
+
+
+
+
+please list total amount invested by each shark.
+
+
+
+
+How many startups have pitched in shark tank USA and how many have got deals?
+
+
+select 
+ sum (Mark_Cuban_Investment_Amount) as Mark_Cuban_total_Investment,
+(
+select 
+sum (Lori_Greiner_Investment_Amount) as Lori_Greiner_Investment_Amount
+ from StartupPitch
+),
+(
+select 
+sum(Robert_Herjavec_Investment_Amount) as Robert_Herjavec_Investment_Amount
+
+ from StartupPitch
+
+),
+(
+select 
+sum(Kevin_O_Leary_Investment_Amount) as Kevin_O_Leary_Investment_Amount
+ from StartupPitch
+),
+(
+select 
+sum(Barbara_Corcoran_Investment_Amount)  as Barbara_Corcoran_Investment_Amount
+ from StartupPitch
+)
+ from StartupPitch
+
+
+
+
+
+mark_cuban_total_investment	lori_greiner_investment_amount	robert_herjavec_investment_amount
+62857666.66	45942499.99	36330666
+
+
+
+
+kevin_o_leary_investment_amount	barbara_corcoran_investment_amount
+29780833.33	19140000
+
+How many from these startups got valuation  less than half of asking valuations?
+
+
+
+select count (*) as no_of_pitches
+ from 
+StartupPitch
+
+
+
+"no_of_pitches"
+1353
+
+
+select 
+count(*)
+from 
+StartupPitch
+where 
+total_deal_amount < original_ask_amount/2
+
+
+ans – 3 
+
+
+
+How many of these startups got more than asking valuation?
+
+select 
+count(*)
+from 
+StartupPitch
+where 
+total_deal_amount > original_ask_amount
+
+
+
+
+
+
+
+
+"count"
+132
+
+
+select 
+count(*) as valuation_asked,
+
+(
+
+select 
+count(*) as twice_valuation_asked
+from 
+StartupPitch
+where 
+total_deal_amount = 2 *original_ask_amount
+
+
+
+),
+
+
+(
+
+select 
+count(*) as thrice_valuation_asked
+from 
+StartupPitch
+where 
+total_deal_amount = 3 *original_ask_amount
+),
+
+
+(
+
+select 
+count(*) as four_times_valuation_asked
+from 
+StartupPitch
+where 
+total_deal_amount = 4 *original_ask_amount
+)
+,
+
+(
+
+select 
+count(*) as five_times_valuation_asked
+from 
+StartupPitch
+where 
+total_deal_amount = 5 *original_ask_amount
+),
+
+
+(
+
+select 
+count(*) as more_than_five_times_valuation_asked
+from 
+StartupPitch
+where 
+total_deal_amount > 5 *original_ask_amount
+)
+,
+
+(
+
+select 
+count(*) as half_valuation_asked
+from 
+StartupPitch
+where 
+total_deal_amount =  original_ask_amount/2
+
+
+
+),
+
+
+(
+
+select 
+count(*) as one_fourth_valuation_asked
+from 
+StartupPitch
+where 
+total_deal_amount = original_ask_amount/4
+),
+
+(
+
+select 
+count(*) as less_than_one_fourth_valuation_asked
+from 
+StartupPitch
+where 
+total_deal_amount  < original_ask_amount/4
+)
+
+from 
+StartupPitch
+where 
+total_deal_amount = original_ask_amount
+
+
+
+valuation_asked	twice_valuation_asked	thrice_valuation_asked	four_times_valuation_asked	five_times_valuation_asked
+671	33	4	5	3
+				
+				
+				
+more_than_five_times_valuation_asked	half_valuation_asked	one_fourth_valuation_asked	less_than_one_fourth_valuation_asked	
+4	8	0	2	
+				
+
+
+Can you estimate sharks fav industry based on data?
+select 
+industry,
+ sum (Mark_Cuban_Investment_Amount) as Mark_Cuban_Investment_Amount,
+sum(Lori_Greiner_Investment_Amount) as Lori_Greiner_Investment_Amount,
+sum(Robert_Herjavec_Investment_Amount) as Robert_Herjavec_Investment_Amount,
+sum(Kevin_O_Leary_Investment_Amount) as Kevin_O_Leary_Investment_Amount,
+sum(Barbara_Corcoran_Investment_Amount) as Barbara_Corcoran_Investment_Amount
+ from StartupPitch
+group by industry
+
+
+
+
+
+industry	mark_cuban_investment_amount	lori_greiner_investment_amount	robert_herjavec_investment_amount	kevin_o_leary_investment_amount	barbara_corcoran_investment_amount
+Electronics	850000	350000	400000	500000	
+Fashion/Beauty	7582500	4938333	5720833	970833.33	3185000
+Liquor/Alcohol	1600000	1500000			50000
+Green/CleanTech	1000000	400000	200000	200000	
+Business Services	2100000	825000	75000	1675000	1025000
+Media/Entertainment	3125000	462500	1737500	550000	400000
+Automotive	370000	420000	400000	500000	250000
+Food and Beverage	1.6E+07	8500000	3737500	7512500	6330000
+Uncertain/Other	3065000	775000	150000	600000	250000
+Travel	300000		5200000		50000
+Fitness/Sports/Outdoors	7780000	2105000	3495000	1317500	1530000
+Pet Products	1208333	3648333	1057333	625000	225000
+Children/Education	3208333	3133333	1874166	3077500	2585000
+Lifestyle/Home	7337500	12760000	4801667	5975000	2482500
+Software/Tech	4495000	1966667	1916667	2379166.7	240000
+Health/Wellness	2772500	4158333	5565000	3898333.3	537500
+
