@@ -54,5 +54,8 @@ Conducted cluster analysis to segment transactions based on spending patterns, e
 Formulated an optimization problem to allocate funds effectively across expense categories, ensuring adherence to budget constraints and savings goals.
 
 
+![image](https://github.com/user-attachments/assets/ef08802a-7479-4bc9-bb04-c5653025c3cb)
+
+
 
 
