@@ -36,5 +36,23 @@ Provided actionable insights into the impact of layoffs at different stages of c
 Optimized data retrieval and reporting processes by creating efficient SQL scripts that enhanced data accuracy and clarity in the analysis.
 
 
+PERSONAL CREDIT CARD STATEMENT SQL ANALYSIS
+Conducted comprehensive financial data analysis to extract insights on spending patterns, seasonal trends, and anomalies, leveraging SQL for complex queries and calculations.
+Retrieved and analyzed transactions from New Year's Day across multiple years, providing year-over-year comparisons of spending behavior.
+Identified the top categories with the highest total spending, helping to uncover significant areas of expense and optimize budget allocations.
+Performed advanced filtering to determine the number of transactions exceeding specific dollar thresholds, offering a granular view of spending behavior.
+Utilized window functions to calculate monthly spending growth and compare transaction amounts to category averages, revealing key financial trends.
+Analyzed weekly spending patterns within specific months, such as May 2023, to track expenses against a timeline and identify high-spending periods.
+Identified months with a higher number of low-value transactions compared to high-value transactions, providing insights into shifting spending priorities.
+Calculated the average monthly spend on OTT platforms and cinemas, highlighting differences in entertainment spending habits.
+Executed a detailed percentile analysis of transaction values, using percentile ranks to provide insights into spending distribution for each month.
+Aggregated spending data by quarter and year, providing a high-level overview of financial trends over time.
+Applied anomaly detection techniques to identify outlier transactions, enabling proactive management of unusual spending patterns.
+Implemented seasonal analysis to reveal cyclical trends in spending, informing better financial planning and forecasting.
+Developed a predictive model for future spending, using historical data to anticipate budget needs and optimize financial decisions.
+Conducted cluster analysis to segment transactions based on spending patterns, enabling targeted financial strategies and consumer behavior insights.
+Formulated an optimization problem to allocate funds effectively across expense categories, ensuring adherence to budget constraints and savings goals.
+
+
 
 
