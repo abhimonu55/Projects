@@ -60,7 +60,8 @@ Formulated an optimization problem to allocate funds effectively across expense 
 
 ![image](https://github.com/user-attachments/assets/702f8d6b-8d2e-4297-9eab-1cd88dc6798c)
 
-https://files.oaiusercontent.com/file-LxgXneSPHLPEqqioZaSz7qPC?se=2024-08-25T01%3A38%3A01Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D4d8d8b6a-c548-4799-81eb-273dbc370d71.webp&sig=UK/wxgDd2wlVP6nryj6qIQAPcOnixJiVzzbvDkcnDzc%3D![image](https://github.com/user-attachments/assets/90a98630-6149-4721-80e1-839f9faf1299)
+![image](https://github.com/user-attachments/assets/d7e4aebc-f701-4207-9ab3-3b69845df055)
+
 
 
 
